@@ -47,13 +47,13 @@ class Compiler
             unlink($pharFile);
         }
 
-        $process = new Process('git log --pretty="%H" -n1 HEAD', $this->directory);
+        $process = new Process(['git', 'log', '--pretty="%H"', '-n1', 'HEAD'], $this->directory);
         if ($process->run() != 0) {
             throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from git repository clone and that git binary is available.');
         }
         $this->version = trim($process->getOutput());
 
-        $process = new Process('git describe --tags HEAD');
+        $process = new Process(['git', 'describe', '--tags', 'HEAD']);
         if ($process->run() == 0) {
             $this->version = trim($process->getOutput());
         }
