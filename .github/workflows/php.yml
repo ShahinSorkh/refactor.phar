@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         php_version: ["7.3", "7.4", "8.0"]
-        os: ["ubuntu-latest", "windows-latest"]
+        os: ["ubuntu-latest"]
 
     steps:
     - uses: actions/checkout@v2
