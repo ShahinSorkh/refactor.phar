@@ -19,7 +19,7 @@
     "require-dev": {
         "php": ">=5.4",
         "behat/behat": "~2.5@stable",
-        "mikey179/vfsStream": "@stable",
+        "mikey179/vfsstream": "@stable",
         "phake/phake": "@stable",
         "symfony/process": "@stable",
         "phpunit/phpunit": "~4.6@stable"
