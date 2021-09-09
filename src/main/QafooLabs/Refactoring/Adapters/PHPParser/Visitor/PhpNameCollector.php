@@ -22,7 +22,6 @@ use PhpParser\Node\Stmt\Use_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\UseUse;
 use PhpParser\Node\Expr\StaticCall;
-use function Psy\sh;
 
 /**
  * Visitor for PHP Parser collecting PHP Names from an AST.
@@ -146,5 +145,21 @@ class PhpNameCollector extends NodeVisitorAbstract
     public function collectedNameDeclarations()
     {
         return $this->nameDeclarations;
+    }
+
+    public function namespaceOfClass($classDeclaration)
+    {
+        $classNameParts = explode('\\', $classDeclaration['fqcn']);
+        $classNamespace = implode('\\', array_slice($classNameParts, 0, -1));
+
+        foreach ($this->nameDeclarations as $declaration) {
+            if ($declaration['type'] !== 'namespace') continue;
+
+            if ($declaration['fqcn'] === $classNamespace) {
+                return $declaration;
+            }
+        }
+
+        return null;
     }
 }

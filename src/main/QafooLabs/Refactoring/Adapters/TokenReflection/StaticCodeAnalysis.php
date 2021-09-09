@@ -18,9 +18,11 @@ use PhpParser\NodeTraverser;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\Node\Stmt\Property;
 use PhpParser\ParserFactory;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LineRangeNodeCollector;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LineRangeStatementCollector;
+use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\PhpNameCollector;
 use QafooLabs\Refactoring\Domain\Services\CodeAnalysis;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Domain\Model\File;
@@ -73,23 +75,23 @@ class StaticCodeAnalysis extends CodeAnalysis
 
     public function getLineOfLastPropertyDefinedInScope(File $file, $lastLine)
     {
+        $collector = new LineRangeNodeCollector(LineRange::fromLines(1, $lastLine));
+        $this->traverser->addVisitor($collector);
         $ast = $this->parser->parse($file->getCode());
+        $this->traverser->traverse($ast);
 
-        // foreach ($file->getNamespaces() as $namespace) {
-        //     foreach ($namespace->getClasses() as $class) {
-        //         $lastPropertyDefinitionLine = $class->getStartLine() + 1;
+        $lastPropertyLine = 0;
+        foreach ($collector->getNodes() as $node) {
+            if ($lastPropertyLine === 0 && $node instanceof Class_) {
+                $lastPropertyLine = $node->getStartLine() + 1;
+            }
 
-        //         foreach ($class->getMethods() as $method) {
-        //             if ($method->getStartLine() < $lastLine && $lastLine < $method->getEndLine()) {
-        //                 foreach ($class->getProperties() as $property) {
-        //                     $lastPropertyDefinitionLine = max($lastPropertyDefinitionLine, $property->getEndLine());
-        //                 }
+            if ($node instanceof Property) {
+                $lastPropertyLine = max($lastPropertyLine, $node->getStartLine());
+            }
+        }
 
-        //                 return $lastPropertyDefinitionLine;
-        //             }
-        //         }
-        //     }
-        // }
+        if ($lastPropertyLine) return $lastPropertyLine;
 
         throw new \InvalidArgumentException("Could not find method start line.");
     }
@@ -105,27 +107,21 @@ class StaticCodeAnalysis extends CodeAnalysis
      */
     public function findClasses(File $file)
     {
-
         $classes = array();
+        $ast = $this->parser->parse($file->getCode());
+        $collector = new PhpNameCollector;
+        $this->traverser->addVisitor($collector);
+        $this->traverser->traverse($ast);
 
-        foreach ($this->parser->parse($file->getCode()) as $node) {
-            if ($node instanceof Namespace_) {
-                foreach ($node->stmts as $stmt) {
-                    if ($stmt instanceof Class_) {
-                        $classes[] = new PhpClass(
-                            PhpName::createDeclarationName($stmt->name),
-                            $stmt->getStartLine(),
-                            $node->getStartLine()
-                        );
-                    }
-                }
-            } elseif ($node instanceof Class_) {
-                $classes[] = new PhpClass(
-                    PhpName::createDeclarationName($node->name),
-                    $node->getStartLine(),
-                    0
-                );
-            }
+        foreach ($collector->collectedNameDeclarations() as $node) {
+            if ($node['type'] !== 'class') continue;
+
+            $namespace = $collector->namespaceOfClass($node);
+            $classes[] = new PhpClass(
+                PhpName::createDeclarationName($node['fqcn']),
+                $node['line'],
+                $namespace ? $namespace['line'] : 0
+            );
         }
 
         return $classes;

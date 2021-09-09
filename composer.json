@@ -22,7 +22,8 @@
         "phake/phake": "@stable",
         "symfony/process": "@stable",
         "phpunit/phpunit": "~8.0@stable",
-        "psy/psysh": "@stable"
+        "psy/psysh": "@stable",
+        "behat/behat": "@stable"
     },
 
     "autoload": {

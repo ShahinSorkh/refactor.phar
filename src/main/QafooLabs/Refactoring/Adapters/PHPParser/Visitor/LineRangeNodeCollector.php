@@ -51,11 +51,14 @@ class LineRangeNodeCollector extends NodeVisitorAbstract
         }
         $this->stack[] = $node;
 
-        if ( ! $this->lineRange->isInRange($node->getLine())) {
+        if (! $this->lineRange->isInRange($node->getLine()) || ! $node->hasAttribute('parent')) {
             return;
         }
 
-        $this->nodes->attach($node->getAttribute('parent'));
+        do {
+            $parent = ($parent ?? $node)->getAttribute('parent');
+            $this->nodes->attach($parent);
+        } while($parent->hasAttribute('parent'));
     }
 
     public function leaveNode(Node $node)

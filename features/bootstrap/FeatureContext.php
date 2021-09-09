@@ -1,34 +1,28 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
-
-use org\bovigo\vfs\vfsStream;
-
-use Symfony\Component\Console\Input\ArrayInput;
-
+use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Adapters\Symfony\CliApplication;
-
-use PHPUnit_Framework_Assert as PHPUnit;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\StreamOutput;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Features context.
  */
-class FeatureContext extends BehatContext
+class FeatureContext implements Context
 {
     private $root;
+    private $structure;
+    private $output;
 
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
-     *
-     * @param array $parameters context parameters (set them up through behat.yml)
      */
-    public function __construct(array $parameters)
+    public function __construct()
     {
         $this->root = vfsStream::setup('project');
         $this->structure = array();
@@ -82,7 +76,7 @@ class FeatureContext extends BehatContext
 
         $fh = fopen("php://memory", "rw");
         $input = new ArrayInput($data);
-        $output = new \Symfony\Component\Console\Output\StreamOutput($fh);
+        $output = new StreamOutput($fh);
 
         $app = new CliApplication();
         $app->setAutoExit(false);
@@ -100,7 +94,7 @@ class FeatureContext extends BehatContext
         $output = array_map('trim', explode("\n", rtrim($this->output)));
         $formattedExpectedPatch = $this->formatExpectedPatch((string)$expectedPatch);
 
-        PHPUnit::assertEquals(
+        TestCase::assertEquals(
             $formattedExpectedPatch,
             $output,
             "Expected File:\n" . (string)$expectedPatch . "\n\n" .

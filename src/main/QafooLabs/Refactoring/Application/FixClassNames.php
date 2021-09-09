@@ -84,7 +84,11 @@ class FixClassNames
             foreach ($renames as $rename) {
                 if ($rename->affects($name)) {
                     $buffer = $this->editor->openBuffer($occurance->file());
-                    $buffer->replaceString($occurance->declarationLine(), $name->relativeName(), $rename->change($name)->relativeName());
+                    $buffer->replaceString(
+                        $occurance->declarationLine(),
+                        $name->relativeName(),
+                        $rename->change($name)->relativeName()
+                    );
                     continue 2;
                 }
             }
