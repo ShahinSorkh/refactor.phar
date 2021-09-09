@@ -4,25 +4,25 @@
     "license": "Apache2",
 
     "authors": [
-        {"name": "Benjamin Eberlei", "email": "kontakt@beberlei.de"}
+        {"name": "Benjamin Eberlei", "email": "kontakt@beberlei.de"},
+        {"name": "Shahin Sorkh", "email": "sorkh.shahin@hotmail.com"}
     ],
 
     "require": {
         "nikic/php-parser": "@stable",
         "beberlei/assert": "@stable",
-        "andrewsville/php-token-reflection": "@stable",
         "symfony/finder": "~2.4@stable",
         "symfony/console": "~2.4@stable",
         "tomphp/patch-builder": "~0.1"
     },
 
     "require-dev": {
-        "php": ">=5.4",
-        "behat/behat": "~2.5@stable",
+        "php": ">=7.2",
         "mikey179/vfsstream": "@stable",
         "phake/phake": "@stable",
         "symfony/process": "@stable",
-        "phpunit/phpunit": "~4.6@stable"
+        "phpunit/phpunit": "~8.0@stable",
+        "psy/psysh": "@stable"
     },
 
     "autoload": {

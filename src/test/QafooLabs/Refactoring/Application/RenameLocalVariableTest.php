@@ -2,6 +2,7 @@
 
 namespace QafooLabs\Refactoring\Application;
 
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Domain\Model\File;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Domain\Model\Variable;
@@ -11,9 +12,14 @@ use QafooLabs\Refactoring\Adapters\PHPParser\ParserVariableScanner;
 use QafooLabs\Refactoring\Adapters\TokenReflection\StaticCodeAnalysis;
 use QafooLabs\Refactoring\Adapters\Patches\PatchEditor;
 
-class RenameLocalVariableTest extends \PHPUnit_Framework_TestCase
+class RenameLocalVariableTest extends TestCase
 {
-    public function setUp()
+    private $scanner;
+    private $codeAnalysis;
+    private $editor;
+    private $refactoring;
+
+    public function setUp():void
     {
         $this->scanner = \Phake::mock('QafooLabs\Refactoring\Domain\Services\VariableScanner');
         $this->codeAnalysis = \Phake::mock('QafooLabs\Refactoring\Domain\Services\CodeAnalysis');
@@ -50,7 +56,7 @@ PHP
 
     public function testRenameNonLocalVariable_ThrowsException()
     {
-        $this->setExpectedException('QafooLabs\Refactoring\Domain\Model\RefactoringException', 'Given variable "$this->foo" is required to be local to the current method.');
+        $this->expectException('QafooLabs\Refactoring\Domain\Model\RefactoringException', 'Given variable "$this->foo" is required to be local to the current method.');
 
         $this->refactoring->refactor(
             new File("foo.php", ''), 6,
@@ -61,7 +67,7 @@ PHP
 
     public function testRenameIntoNonLocalVariable_ThrowsException()
     {
-        $this->setExpectedException('QafooLabs\Refactoring\Domain\Model\RefactoringException', 'Given variable "$this->foo" is required to be local to the current method.');
+        $this->expectException('QafooLabs\Refactoring\Domain\Model\RefactoringException', 'Given variable "$this->foo" is required to be local to the current method.');
 
         $this->refactoring->refactor(
             new File("foo.php", ''), 6,

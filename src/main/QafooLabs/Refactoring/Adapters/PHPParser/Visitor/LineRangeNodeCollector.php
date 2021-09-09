@@ -19,45 +19,53 @@ use QafooLabs\Refactoring\Domain\Model\LineRange;
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr\FuncCall;
+use function Psy\sh;
 
 /**
  * Given a line range, collect the AST slice that is inside that range.
  */
-class LineRangeStatementCollector extends NodeVisitorAbstract
+class LineRangeNodeCollector extends NodeVisitorAbstract
 {
     /**
      * @var LineRange
      */
     private $lineRange;
-    private $statements;
+    private $nodes;
+    private $stack;
 
     public function __construct(LineRange $lineRange)
     {
         $this->lineRange = $lineRange;
-        $this->statements = new \SplObjectStorage();
+        $this->nodes = new \SplObjectStorage();
+    }
+
+    public function beginTraverse(array $nodes)
+    {
+        $this->stack = [];
     }
 
     public function enterNode(Node $node)
     {
+        if (!empty($this->stack)) {
+            $node->setAttribute('parent', $this->stack[count($this->stack)-1]);
+        }
+        $this->stack[] = $node;
+
         if ( ! $this->lineRange->isInRange($node->getLine())) {
             return;
         }
 
-        $parent = $node->getAttribute('parent');
-
-        // TODO: Expensive (?)
-        do {
-            if ($parent && $this->statements->contains($parent)) {
-                return;
-            }
-        } while($parent && $parent = $parent->getAttribute('parent'));
-
-        $this->statements->attach($node);
+        $this->nodes->attach($node->getAttribute('parent'));
     }
 
-    public function getStatements()
+    public function leaveNode(Node $node)
     {
-        return iterator_to_array($this->statements);
+        array_pop($this->stack);
+    }
+
+    public function getNodes()
+    {
+        return iterator_to_array($this->nodes);
     }
 }
 

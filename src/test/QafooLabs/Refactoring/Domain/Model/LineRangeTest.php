@@ -2,7 +2,9 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class LineRangeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class LineRangeTest extends TestCase
 {
     public function testCreateFromSingleLine()
     {

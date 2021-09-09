@@ -2,16 +2,17 @@
 
 namespace QafooLabs\Refactoring\Domain\Model\EditingAction;
 
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Domain\Model\Variable;
 use QafooLabs\Refactoring\Domain\Model\DefinedVariables;
 
-class RenameVariableTest extends \PHPUnit_Framework_TestCase
+class RenameVariableTest extends TestCase
 {
     private $buffer;
 
-    protected function setUp()
+    protected function setUp():void
     {
-        $this->buffer = $this->getMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
+        $this->buffer = $this->createMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
     }
 
     public function testItIsAnEditingAction()

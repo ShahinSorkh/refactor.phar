@@ -2,11 +2,13 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class UseStatementTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UseStatementTest extends TestCase
 {
     private $useStatement;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
 

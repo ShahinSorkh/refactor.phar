@@ -14,19 +14,19 @@
 
 namespace QafooLabs\Refactoring\Adapters\PHPParser\Visitor;
 
-use PHPParser_Node;
-use PHPParser_NodeVisitorAbstract;
-use PHPParser_Node_Expr_Variable;
-use PHPParser_Node_Expr_Assign;
-use PHPParser_Node_Expr_ArrayDimFetch;
-use PHPParser_Node_Param;
+use PhpParser\Node;
+use PhpParser\NodeVisitorAbstract;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\ArrayDimFetch;
+use PhpParser\Node\Param;
 use SplObjectStorage;
 
 /**
  * Classify local variables into assignments and usages,
  * permanent and temporary variables.
  */
-class LocalVariableClassifier extends PHPParser_NodeVisitorAbstract
+class LocalVariableClassifier extends NodeVisitorAbstract
 {
     private $localVariables = array();
     private $assignments = array();
@@ -37,32 +37,32 @@ class LocalVariableClassifier extends PHPParser_NodeVisitorAbstract
         $this->seenAssignmentVariables = new SplObjectStorage();
     }
 
-    public function enterNode(PHPParser_Node $node)
+    public function enterNode(Node $node)
     {
-        if ($node instanceof PHPParser_Node_Expr_Variable) {
+        if ($node instanceof Variable) {
             $this->enterVariableNode($node);
         }
 
-        if ($node instanceof PHPParser_Node_Expr_Assign) {
+        if ($node instanceof Assign) {
             $this->enterAssignment($node);
         }
 
-        if ($node instanceof PHPParser_Node_Param) {
+        if ($node instanceof Param) {
             $this->enterParam($node);
         }
     }
 
     private function enterParam($node)
     {
-        $this->assignments[$node->name][] = $node->getLine();
+        $this->assignments[$node->var][] = $node->getLine();
     }
 
     private function enterAssignment($node)
     {
-        if ($node->var instanceof PHPParser_Node_Expr_Variable) {
+        if ($node->var instanceof Variable) {
             $this->assignments[$node->var->name][] = $node->getLine();
             $this->seenAssignmentVariables->attach($node->var);
-        } else if ($node->var instanceof PHPParser_Node_Expr_ArrayDimFetch) {
+        } else if ($node->var instanceof ArrayDimFetch) {
             // $foo[] = "baz" is both a read and a write access to $foo
             $this->localVariables[$node->var->var->name][] = $node->getLine();
             $this->assignments[$node->var->var->name][] = $node->getLine();

@@ -2,9 +2,10 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
+use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends TestCase
 {
     private function createFileSystem()
     {

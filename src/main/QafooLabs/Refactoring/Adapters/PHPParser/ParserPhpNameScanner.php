@@ -2,6 +2,7 @@
 
 namespace QafooLabs\Refactoring\Adapters\PHPParser;
 
+use PhpParser\ParserFactory;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\PhpNameCollector;
 use QafooLabs\Refactoring\Domain\Services\PhpNameScanner;
 use QafooLabs\Refactoring\Domain\Model\File;
@@ -10,22 +11,22 @@ use QafooLabs\Refactoring\Domain\Model\UseStatement;
 use QafooLabs\Refactoring\Domain\Model\PhpName;
 use QafooLabs\Refactoring\Domain\Model\PhpNameOccurance;
 
-use PHPParser_Parser;
-use PHPParser_Lexer;
-use PHPParser_NodeTraverser;
-use PHPParser_Error;
+use PhpParser\Parser;
+use PhpParser\NodeTraverser;
+use PhpParser\Error;
+use function Psy\sh;
 
 class ParserPhpNameScanner implements PhpNameScanner
 {
     public function findNames(File $file)
     {
-        $parser    = new PHPParser_Parser(new PHPParser_Lexer());
+        $parser    = (new ParserFactory)->create(ParserFactory::ONLY_PHP7);
         $collector = new PhpNameCollector();
-        $traverser = new PHPParser_NodeTraverser;
+        $traverser = new NodeTraverser;
 
         try {
             $stmts = $parser->parse($file->getCode());
-        } catch (PHPParser_Error $e) {
+        } catch (Error $e) {
             throw new \RuntimeException("Error parsing " . $file->getRelativePath() .": " . $e->getMessage(), 0, $e);
         }
 

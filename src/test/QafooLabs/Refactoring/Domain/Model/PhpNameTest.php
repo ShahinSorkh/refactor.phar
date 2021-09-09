@@ -13,7 +13,9 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class PhpNameTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PhpNameTest extends TestCase
 {
     public function testIsAffectedByChangesToItself()
     {

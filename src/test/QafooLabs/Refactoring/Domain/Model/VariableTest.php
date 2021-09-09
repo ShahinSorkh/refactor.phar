@@ -2,11 +2,13 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class VariableTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class VariableTest extends TestCase
 {
     public function testCreateInvalidVariable()
     {
-        $this->setExpectedException('QafooLabs\Refactoring\Domain\Model\RefactoringException', 'The given variable name "(); " is not valid in PHP.');
+        $this->expectException('QafooLabs\Refactoring\Domain\Model\RefactoringException', 'The given variable name "(); " is not valid in PHP.');
 
         new Variable('(); ');
     }

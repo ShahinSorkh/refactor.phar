@@ -2,17 +2,19 @@
 
 namespace QafooLabs\Refactoring\Application;
 
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Domain\Model\File;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Adapters\PHPParser\ParserVariableScanner;
 use QafooLabs\Refactoring\Adapters\TokenReflection\StaticCodeAnalysis;
 use QafooLabs\Refactoring\Adapters\PatchBuilder\PatchEditor;
 
-class ExtractMethodTest extends \PHPUnit_Framework_TestCase
+class ExtractMethodTest extends TestCase
 {
     private $applyCommand;
+    private $refactoring;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->applyCommand = \Phake::mock('QafooLabs\Refactoring\Adapters\PatchBuilder\ApplyPatchCommand');
 
@@ -39,7 +41,6 @@ class Foo
 }
 PHP
             ), LineRange::fromString("6-6"), "helloWorld");
-
 
         \Phake::verify($this->applyCommand)->apply(<<<'CODE'
 --- a/foo.php
@@ -86,7 +87,6 @@ class Foo
 }
 PHP
             ), LineRange::fromString("9-10"), "extract");
-
 
         \Phake::verify($this->applyCommand)->apply(<<<'CODE'
 --- a/foo.php

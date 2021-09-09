@@ -14,8 +14,9 @@
 namespace QafooLabs\Refactoring\Utils;
 
 use ArrayIterator;
+use PHPUnit\Framework\TestCase;
 
-class ToStringIteratorTest extends \PHPUnit_Framework_TestCase
+class ToStringIteratorTest extends TestCase
 {
     public function testConvertsObjectsToStrings()
     {

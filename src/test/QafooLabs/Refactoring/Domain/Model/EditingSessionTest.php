@@ -13,23 +13,25 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class EditingSessionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class EditingSessionTest extends TestCase
 {
     private $session;
 
     private $buffer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->buffer = $this->getMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
+        $this->buffer = $this->createMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
 
         $this->session = new EditingSession($this->buffer);
     }
 
     public function testEditActionsArePerformed()
     {
-        $action1 = $this->getMock('QafooLabs\Refactoring\Domain\Model\EditingAction');
-        $action2 = $this->getMock('QafooLabs\Refactoring\Domain\Model\EditingAction');
+        $action1 = $this->createMock('QafooLabs\Refactoring\Domain\Model\EditingAction');
+        $action2 = $this->createMock('QafooLabs\Refactoring\Domain\Model\EditingAction');
 
         $action1->expects($this->once())
                 ->method('performEdit')

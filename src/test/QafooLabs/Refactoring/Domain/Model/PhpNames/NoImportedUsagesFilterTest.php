@@ -2,11 +2,12 @@
 
 namespace QafooLabs\Refactoring\Domain\Model\PhpNames;
 
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Domain\Model\PhpName;
 use QafooLabs\Refactoring\Domain\Model\PhpNameOccurance;
 use QafooLabs\Refactoring\Domain\Model\File;
 
-class NoImportedUsagesFilterTest extends \PHPUnit_Framework_TestCase
+class NoImportedUsagesFilterTest extends TestCase
 {
     /**
      * @group GH-31

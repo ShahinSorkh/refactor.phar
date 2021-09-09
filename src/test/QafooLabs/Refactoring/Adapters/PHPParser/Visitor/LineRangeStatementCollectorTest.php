@@ -2,14 +2,16 @@
 
 namespace QafooLabs\Refactoring\Adapters\PHPParser\Visitor;
 
-use PHPParser_Parser;
-use PHPParser_Lexer;
-use PHPParser_NodeTraverser;
+use PHPUnit\Framework\TestCase;
+use PhpParser\Parser;
+use PhpParser\Lexer;
+use PhpParser\NodeTraverser;
 
+use PhpParser\ParserFactory;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\NodeConnector;
 
-class LineRangeStatementCollectorTest extends \PHPUnit_Framework_TestCase
+class LineRangeStatementCollectorTest extends TestCase
 {
     /**
      * @test
@@ -25,14 +27,14 @@ class LineRangeStatementCollectorTest extends \PHPUnit_Framework_TestCase
         $collectedStatements = $collector->getStatements();
 
         $this->assertCount(1, $collectedStatements);
-        $this->assertInstanceOf('PHPParser_Node_Expr_MethodCall', $collectedStatements[0]);
+        $this->assertInstanceOf('\PhpParser\Node\Stmt\Expression', $collectedStatements[0]);
     }
 
     private function traverse($stmts, $visitor)
     {
         $this->connect($stmts);
 
-        $traverser     = new PHPParser_NodeTraverser;
+        $traverser     = new NodeTraverser;
         $traverser->addVisitor(new NodeConnector);
         $traverser->addVisitor($visitor);
         $traverser->traverse($stmts);
@@ -42,7 +44,7 @@ class LineRangeStatementCollectorTest extends \PHPUnit_Framework_TestCase
 
     private function connect($stmts)
     {
-        $traverser     = new PHPParser_NodeTraverser;
+        $traverser     = new NodeTraverser;
         $traverser->addVisitor(new NodeConnector);
         return $traverser->traverse($stmts);
     }
@@ -58,7 +60,7 @@ class LineRangeStatementCollectorTest extends \PHPUnit_Framework_TestCase
             $code = "<?php\n" . $code;
         }
 
-        $parser = new PHPParser_Parser(new PHPParser_Lexer());
+        $parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7);
         return $parser->parse($code);
 
     }

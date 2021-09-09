@@ -2,9 +2,10 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Utils\ToStringIterator;
 
-class LineCollectionTest extends \PHPUnit_Framework_TestCase
+class LineCollectionTest extends TestCase
 {
     public function testItStoresLines()
     {

@@ -2,13 +2,14 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Utils\ToStringIterator;
 
-class IndentingLineCollectionTest extends \PHPUnit_Framework_TestCase
+class IndentingLineCollectionTest extends TestCase
 {
     private $lines;
 
-    protected function setUp()
+    protected function setUp():void
     {
         $this->lines = new IndentingLineCollection();
     }

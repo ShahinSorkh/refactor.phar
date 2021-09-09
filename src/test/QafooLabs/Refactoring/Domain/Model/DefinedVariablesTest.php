@@ -2,7 +2,9 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class DefinedVariablesTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DefinedVariablesTest extends TestCase
 {
     /**
      * @test

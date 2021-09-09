@@ -2,7 +2,9 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class LineTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class LineTest extends TestCase
 {
     public function testItStoresTheLineOfCode()
     {

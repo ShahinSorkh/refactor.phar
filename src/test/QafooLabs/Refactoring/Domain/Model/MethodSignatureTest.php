@@ -2,7 +2,9 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class MethodSignatureTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class MethodSignatureTest extends TestCase
 {
     /**
      * @test
@@ -20,7 +22,7 @@ class MethodSignatureTest extends \PHPUnit_Framework_TestCase
      */
     public function whenCreateMethodSignatureWithInvalidVisibility_ThenThrowException()
     {
-        $this->setExpectedException("InvalidArgumentException");
+        $this->expectException("InvalidArgumentException");
 
         $method = new MethodSignature("foo", MethodSignature::IS_PRIVATE | MethodSignature::IS_PUBLIC);
     }

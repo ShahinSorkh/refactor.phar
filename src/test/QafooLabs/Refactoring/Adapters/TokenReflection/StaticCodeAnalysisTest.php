@@ -2,10 +2,10 @@
 
 namespace QafooLabs\Refactoring\Adapters\TokenReflection;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Domain\Model\File;
 
-class StaticCodeAnalysisTest extends PHPUnit_Framework_TestCase 
+class StaticCodeAnalysisTest extends TestCase
 {
     public function testNamespaceDeclarationForFileWithoutNamespace_isInLine0()
     {

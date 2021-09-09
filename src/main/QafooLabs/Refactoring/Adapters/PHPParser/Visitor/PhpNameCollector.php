@@ -13,19 +13,21 @@
 
 namespace QafooLabs\Refactoring\Adapters\PHPParser\Visitor;
 
-use PHPParser_Node;
-use PHPParser_Node_Name;
-use PHPParser_Node_Stmt_Namespace;
-use PHPParser_Node_Stmt_Use;
-use PHPParser_Node_Stmt_Class;
-use PHPParser_Node_Stmt_UseUse;
-use PHPParser_Node_Expr_New;
-use PHPParser_Node_Expr_StaticCall;
+use PhpParser\Node;
+use PhpParser\NodeVisitorAbstract;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\Node\Stmt\Use_;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\UseUse;
+use PhpParser\Node\Expr\StaticCall;
+use function Psy\sh;
 
 /**
  * Visitor for PHP Parser collecting PHP Names from an AST.
  */
-class PhpNameCollector extends \PHPParser_NodeVisitorAbstract
+class PhpNameCollector extends NodeVisitorAbstract
 {
     /**
      * @var array
@@ -40,14 +42,14 @@ class PhpNameCollector extends \PHPParser_NodeVisitorAbstract
      */
     private $currentNamespace;
 
-    public function enterNode(PHPParser_Node $node)
+    public function enterNode(Node $node)
     {
-        if ($node instanceof PHPParser_Node_Stmt_Use) {
+        if ($node instanceof Use_) {
             foreach ($node->uses as $use) {
-                if ($use instanceof PHPParser_Node_Stmt_UseUse) {
+                if ($use instanceof UseUse) {
                     $name = implode('\\', $use->name->parts);
 
-                    $this->useStatements[$use->alias] = $name;
+                    $this->useStatements[$use->alias ?: $use->name->getLast()] = $name;
                     $this->nameDeclarations[] = array(
                         'alias' => $name,
                         'fqcn' => $name,
@@ -58,8 +60,7 @@ class PhpNameCollector extends \PHPParser_NodeVisitorAbstract
             }
         }
 
-
-        if ($node instanceof PHPParser_Node_Expr_New && $node->class instanceof PHPParser_Node_Name) {
+        if ($node instanceof New_ && $node->class instanceof Name) {
             $usedAlias = implode('\\', $node->class->parts);
 
             $this->nameDeclarations[] = array(
@@ -70,7 +71,7 @@ class PhpNameCollector extends \PHPParser_NodeVisitorAbstract
             );
         }
 
-        if ($node instanceof PHPParser_Node_Expr_StaticCall && $node->class instanceof PHPParser_Node_Name) {
+        if ($node instanceof StaticCall && $node->class instanceof Name) {
             $usedAlias = implode('\\', $node->class->parts);
 
             $this->nameDeclarations[] = array(
@@ -81,8 +82,8 @@ class PhpNameCollector extends \PHPParser_NodeVisitorAbstract
             );
         }
 
-        if ($node instanceof PHPParser_Node_Stmt_Class) {
-            $className = $node->name;
+        if ($node instanceof Class_) {
+            $className = $node->name->name;
 
             $this->nameDeclarations[] = array(
                 'alias' => $className,
@@ -114,7 +115,7 @@ class PhpNameCollector extends \PHPParser_NodeVisitorAbstract
             }
         }
 
-        if ($node instanceof PHPParser_Node_Stmt_Namespace) {
+        if ($node instanceof Namespace_) {
             $this->currentNamespace = implode('\\', $node->name->parts);
             $this->useStatements = array();
 

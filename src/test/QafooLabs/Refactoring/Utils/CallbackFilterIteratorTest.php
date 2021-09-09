@@ -14,8 +14,9 @@
 namespace QafooLabs\Refactoring\Utils;
 
 use ArrayIterator;
+use PHPUnit\Framework\TestCase;
 
-class CallbackFilterIteratorTest extends \PHPUnit_Framework_TestCase
+class CallbackFilterIteratorTest extends TestCase
 {
     public function testFilterEmptyElements()
     {

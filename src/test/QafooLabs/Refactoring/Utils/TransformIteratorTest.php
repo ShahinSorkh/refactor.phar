@@ -14,8 +14,9 @@
 namespace QafooLabs\Refactoring\Utils;
 
 use ArrayIterator;
+use PHPUnit\Framework\TestCase;
 
-class TransformIteratorTest extends \PHPUnit_Framework_TestCase
+class TransformIteratorTest extends TestCase
 {
     public function testTransformValues()
     {

@@ -14,6 +14,7 @@
 
 namespace QafooLabs\Refactoring\Adapters\PHPParser;
 
+use PhpParser\ParserFactory;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Domain\Model\File;
 use QafooLabs\Refactoring\Domain\Model\DefinedVariables;
@@ -23,23 +24,23 @@ use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LineRangeStatementCollector
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LocalVariableClassifier;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\NodeConnector;
 
-use PHPParser_Parser;
-use PHPParser_Lexer;
-use PHPParser_Node;
-use PHPParser_Node_Stmt;
-use PHPParser_Node_Expr_FuncCall;
-use PHPParser_NodeTraverser;
+use PhpParser\Parser;
+use PhpParser\Lexer;
+use PhpParser\Node;
+use PhpParser\Node\Stmt;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\NodeTraverser;
 
 class ParserVariableScanner implements VariableScanner
 {
     public function scanForVariables(File $file, LineRange $range)
     {
-        $parser = new PHPParser_Parser(new PHPParser_Lexer());
+        $parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7);
         $stmts = $parser->parse($file->getCode());
 
         $collector = new LineRangeStatementCollector($range);
 
-        $traverser     = new PHPParser_NodeTraverser;
+        $traverser     = new NodeTraverser;
         $traverser->addVisitor(new NodeConnector);
         $traverser->addVisitor($collector);
 
@@ -52,7 +53,7 @@ class ParserVariableScanner implements VariableScanner
         }
 
         $localVariableClassifier = new LocalVariableClassifier();
-        $traverser     = new PHPParser_NodeTraverser;
+        $traverser     = new NodeTraverser;
         $traverser->addVisitor($localVariableClassifier);
         $traverser->traverse($selectedStatements);
 

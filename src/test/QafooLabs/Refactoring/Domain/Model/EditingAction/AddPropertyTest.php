@@ -2,13 +2,15 @@
 
 namespace QafooLabs\Refactoring\Domain\Model\EditingAction;
 
-class AddPropertyTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AddPropertyTest extends TestCase
 {
     private $buffer;
 
-    protected function setUp()
+    protected function setUp():void
     {
-        $this->buffer = $this->getMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
+        $this->buffer = $this->createMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
     }
 
     public function testItIsAnEditingAction()

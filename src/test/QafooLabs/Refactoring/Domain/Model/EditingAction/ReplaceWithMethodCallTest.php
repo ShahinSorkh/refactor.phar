@@ -2,16 +2,17 @@
 
 namespace QafooLabs\Refactoring\Domain\Model\EditingAction;
 
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Domain\Model\MethodSignature;
 
-class ReplaceWithMethodCallTest extends \PHPUnit_Framework_TestCase
+class ReplaceWithMethodCallTest extends TestCase
 {
     private $buffer;
 
-    protected function setUp()
+    protected function setUp():void
     {
-        $this->buffer = $this->getMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
+        $this->buffer = $this->createMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
     }
 
     public function testItIsAnEditingAction()

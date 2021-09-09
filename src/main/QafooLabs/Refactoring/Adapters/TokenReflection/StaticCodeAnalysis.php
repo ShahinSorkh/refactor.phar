@@ -14,23 +14,32 @@
 
 namespace QafooLabs\Refactoring\Adapters\TokenReflection;
 
+use PhpParser\NodeTraverser;
+use PhpParser\Node\FunctionLike;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\ParserFactory;
+use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LineRangeNodeCollector;
+use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LineRangeStatementCollector;
 use QafooLabs\Refactoring\Domain\Services\CodeAnalysis;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Domain\Model\File;
 use QafooLabs\Refactoring\Domain\Model\PhpClass;
 use QafooLabs\Refactoring\Domain\Model\PhpName;
-
-use TokenReflection\Broker;
-use TokenReflection\Broker\Backend\Memory;
-use TokenReflection\ReflectionNamespace;
+use function Psy\sh;
 
 class StaticCodeAnalysis extends CodeAnalysis
 {
-    private $broker;
+    /** @var \PhpParser\Parser\Php7 */
+    private $parser;
+
+    /** @var \PhpParser\NodeTraverser */
+    private $traverser;
 
     public function __construct()
     {
-        // caching in memory gives us error for now :(
+        $this->parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7);
+        $this->traverser = new NodeTraverser;
     }
 
     public function isMethodStatic(File $file, LineRange $range)
@@ -64,31 +73,30 @@ class StaticCodeAnalysis extends CodeAnalysis
 
     public function getLineOfLastPropertyDefinedInScope(File $file, $lastLine)
     {
-        $this->broker = new Broker(new Memory);
-        $file = $this->broker->processString($file->getCode(), $file->getRelativePath(), true);
+        $ast = $this->parser->parse($file->getCode());
 
-        foreach ($file->getNamespaces() as $namespace) {
-            foreach ($namespace->getClasses() as $class) {
-                $lastPropertyDefinitionLine = $class->getStartLine() + 1;
+        // foreach ($file->getNamespaces() as $namespace) {
+        //     foreach ($namespace->getClasses() as $class) {
+        //         $lastPropertyDefinitionLine = $class->getStartLine() + 1;
 
-                foreach ($class->getMethods() as $method) {
-                    if ($method->getStartLine() < $lastLine && $lastLine < $method->getEndLine()) {
-                        foreach ($class->getProperties() as $property) {
-                            $lastPropertyDefinitionLine = max($lastPropertyDefinitionLine, $property->getEndLine());
-                        }
+        //         foreach ($class->getMethods() as $method) {
+        //             if ($method->getStartLine() < $lastLine && $lastLine < $method->getEndLine()) {
+        //                 foreach ($class->getProperties() as $property) {
+        //                     $lastPropertyDefinitionLine = max($lastPropertyDefinitionLine, $property->getEndLine());
+        //                 }
 
-                        return $lastPropertyDefinitionLine;
-                    }
-                }
-            }
-        }
+        //                 return $lastPropertyDefinitionLine;
+        //             }
+        //         }
+        //     }
+        // }
 
         throw new \InvalidArgumentException("Could not find method start line.");
     }
 
     public function isInsideMethod(File $file, LineRange $range)
     {
-        return $this->findMatchingMethod($file, $range) !== null;
+        return (bool) $this->findMatchingMethod($file, $range);
     }
 
     /**
@@ -97,18 +105,25 @@ class StaticCodeAnalysis extends CodeAnalysis
      */
     public function findClasses(File $file)
     {
+
         $classes = array();
 
-        $this->broker = new Broker(new Memory);
-
-        $file = $this->broker->processString($file->getCode(), $file->getRelativePath(), true);
-        foreach ($file->getNamespaces() as $namespace) {
-            $noNamespace = ReflectionNamespace::NO_NAMESPACE_NAME === $namespace->getName();
-            foreach ($namespace->getClasses() as $class) {
+        foreach ($this->parser->parse($file->getCode()) as $node) {
+            if ($node instanceof Namespace_) {
+                foreach ($node->stmts as $stmt) {
+                    if ($stmt instanceof Class_) {
+                        $classes[] = new PhpClass(
+                            PhpName::createDeclarationName($stmt->name),
+                            $stmt->getStartLine(),
+                            $node->getStartLine()
+                        );
+                    }
+                }
+            } elseif ($node instanceof Class_) {
                 $classes[] = new PhpClass(
-                    PhpName::createDeclarationName($class->getName()),
-                    $class->getStartLine(),
-                    $noNamespace ? 0 : $namespace->getStartLine()
+                    PhpName::createDeclarationName($node->name),
+                    $node->getStartLine(),
+                    0
                 );
             }
         }
@@ -118,23 +133,17 @@ class StaticCodeAnalysis extends CodeAnalysis
 
     private function findMatchingMethod(File $file, LineRange $range)
     {
-        $foundMethod = null;
+        $collector = new LineRangeNodeCollector($range);
+        $ast = $this->parser->parse($file->getCode());
+        $this->traverser->addVisitor($collector);
+        $this->traverser->traverse($ast);
 
-        $this->broker = new Broker(new Memory);
-        $file = $this->broker->processString($file->getCode(), $file->getRelativePath(), true);
-        $lastLine = $range->getEnd();
-
-        foreach ($file->getNamespaces() as $namespace) {
-            foreach ($namespace->getClasses() as $class) {
-                foreach ($class->getMethods() as $method) {
-                    if ($method->getStartLine() < $lastLine && $lastLine < $method->getEndLine()) {
-                        $foundMethod = $method;
-                        break;
-                    }
-                }
+        foreach ($collector->getNodes() as $node) {
+            if ($node instanceof FunctionLike) {
+                return $node;
             }
         }
 
-        return $foundMethod;
+        return null;
     }
 }

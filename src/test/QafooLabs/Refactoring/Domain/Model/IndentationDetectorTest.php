@@ -2,7 +2,9 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-class IndentationDetectorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class IndentationDetectorTest extends TestCase
 {
     public function testGetMinIndentationForOneLine()
     {

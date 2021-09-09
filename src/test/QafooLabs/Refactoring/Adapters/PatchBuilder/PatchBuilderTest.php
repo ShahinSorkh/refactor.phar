@@ -2,14 +2,16 @@
 
 namespace QafooLabs\Refactoring\Adapters\PatchBuilder;
 
-class PatchBuilderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PatchBuilderTest extends TestCase
 {
     /**
      * @var PatchBuilder
      */
     private $builder;
 
-    protected function setUp()
+    protected function setUp():void
     {
         $this->builder = new PatchBuilder(
             "line1\n" .

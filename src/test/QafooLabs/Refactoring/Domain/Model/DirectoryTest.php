@@ -2,10 +2,11 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
+use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
 
-class DirectoryTest extends \PHPUnit_Framework_TestCase
+class DirectoryTest extends TestCase
 {
     public function testFindAllPhpFilesRecursivly()
     {
