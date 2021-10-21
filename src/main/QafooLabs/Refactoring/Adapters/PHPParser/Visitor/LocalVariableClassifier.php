@@ -28,8 +28,8 @@ use SplObjectStorage;
  */
 class LocalVariableClassifier extends NodeVisitorAbstract
 {
-    private $localVariables = array();
-    private $assignments = array();
+    private $localVariables = [];
+    private $assignments = [];
     private $seenAssignmentVariables;
 
     public function __construct()
@@ -54,7 +54,7 @@ class LocalVariableClassifier extends NodeVisitorAbstract
 
     private function enterParam($node)
     {
-        $this->assignments[$node->var][] = $node->getLine();
+        $this->assignments[$node->var->name][] = $node->getLine();
     }
 
     private function enterAssignment($node)
