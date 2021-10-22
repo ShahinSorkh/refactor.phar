@@ -82,6 +82,8 @@ HELP
 
         $extractMethod = new ExtractMethod($scanner, $codeAnalysis, $editor);
         $extractMethod->refactor($file, $range, $newMethodName);
+
+        return 0;
     }
 }
 

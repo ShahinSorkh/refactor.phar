@@ -75,5 +75,7 @@ HELP
 
         $convertRefactoring = new ConvertLocalToInstanceVariable($scanner, $codeAnalysis, $editor);
         $convertRefactoring->refactor($file, $line, $variable);
+
+        return 0;
     }
 }

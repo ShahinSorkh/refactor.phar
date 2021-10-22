@@ -68,6 +68,8 @@ HELP
 
         $fixClassNames = new FixClassNames($codeAnalysis, $editor, $phpNameScanner);
         $fixClassNames->refactor($directory);
+
+        return 0;
     }
 }
 

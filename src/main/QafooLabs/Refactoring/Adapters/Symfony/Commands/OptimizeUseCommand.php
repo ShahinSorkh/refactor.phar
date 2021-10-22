@@ -80,5 +80,7 @@ HELP
 
         $optimizeUse = new OptimizeUse($codeAnalysis, $editor, $phpNameScanner);
         $optimizeUse->refactor($file);
+
+        return 0;
     }
 }

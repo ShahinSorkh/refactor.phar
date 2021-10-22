@@ -75,5 +75,7 @@ HELP
 
         $renameLocalVariable = new RenameLocalVariable($scanner, $codeAnalysis, $editor);
         $renameLocalVariable->refactor($file, $line, $name, $newName);
+
+        return 0;
     }
 }
