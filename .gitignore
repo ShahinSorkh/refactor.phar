@@ -1,11 +1,8 @@
-vendor
-refactor.phar
-.abc
-.pear
-build/
-composer.phar
-
+/.abc
+/vendor
+/refactor.phar
+/composer.phar
 /php-refactoring-browser.sublime-project
-
 /php-refactoring-browser.sublime-workspace
+/reports
 *.cache
