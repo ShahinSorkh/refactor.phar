@@ -1,0 +1,48 @@
+on:
+  create:
+    tags:
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup php
+        uses: shivammathur/setup-php@2.13.0
+        with:
+          php-version: "7.3"
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Build refactor.phar
+        run: make
+
+      - name: Collect all artifacts
+        run: |
+          mkdir -p artifacts
+          cp refactor.phar artifacts
+          cp reports/phpunit/default.xml artifacts
+          cp reports/behat/default.xml artifacts
+
+      - name: Upload result as release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "artifacts/*"
+          body: ""
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.GITHUB_REF }}
+          name: ${{ env.GITHUB_REF }}
