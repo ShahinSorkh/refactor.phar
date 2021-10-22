@@ -66,14 +66,12 @@ class LocalVariableToInstanceTest extends TestCase
         $action = new LocalVariableToInstance($definedVars, $variable);
 
         $this->buffer
-             ->expects($this->at(0))
+             ->expects($this->exactly(2))
              ->method('replaceString')
-             ->with($this->equalTo(12), $this->anything(), $this->anything());
-
-        $this->buffer
-             ->expects($this->at(1))
-             ->method('replaceString')
-             ->with($this->equalTo(15), $this->anything(), $this->anything());
+             ->withConsecutive(
+                 [$this->equalTo(12), $this->anything(), $this->anything()],
+                 [$this->equalTo(15), $this->anything(), $this->anything()]
+             );
 
         $action->performEdit($this->buffer);
     }
@@ -101,14 +99,12 @@ class LocalVariableToInstanceTest extends TestCase
         $action = new LocalVariableToInstance($definedVars, $variable);
 
         $this->buffer
-             ->expects($this->at(0))
+             ->expects($this->exactly(2))
              ->method('replaceString')
-             ->with($this->equalTo(12), $this->anything(), $this->anything());
-
-        $this->buffer
-             ->expects($this->at(1))
-             ->method('replaceString')
-             ->with($this->equalTo(15), $this->anything(), $this->anything());
+             ->withConsecutive(
+                 [$this->equalTo(12), $this->anything(), $this->anything()],
+                 [$this->equalTo(15), $this->anything(), $this->anything()]
+             );
 
         $action->performEdit($this->buffer);
     }

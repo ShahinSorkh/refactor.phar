@@ -1,38 +1,38 @@
 {
-    "name": "qafoolabs/php-refactoring-browser",
-    "description": "Refactoring Browser for PHP",
-    "license": "Apache2",
+  "name": "qafoolabs/php-refactoring-browser",
+  "description": "Refactoring Browser for PHP",
+  "license": "Apache2",
 
-    "authors": [
-        {"name": "Benjamin Eberlei", "email": "kontakt@beberlei.de"},
-        {"name": "Shahin Sorkh", "email": "sorkh.shahin@hotmail.com"}
-    ],
+  "authors": [
+    { "name": "Benjamin Eberlei", "email": "kontakt@beberlei.de" },
+    { "name": "Shahin Sorkh", "email": "sorkh.shahin@hotmail.com" }
+  ],
 
-    "require": {
-        "nikic/php-parser": "@stable",
-        "beberlei/assert": "@stable",
-        "symfony/finder": "~2.4@stable",
-        "symfony/console": "~2.4@stable",
-        "tomphp/patch-builder": "~0.1"
-    },
+  "require": {
+    "nikic/php-parser": "@stable",
+    "beberlei/assert": "@stable",
+    "symfony/finder": "~2.4@stable",
+    "symfony/console": "~2.4@stable",
+    "tomphp/patch-builder": "~0.1"
+  },
 
-    "require-dev": {
-        "php": ">=7.2",
-        "mikey179/vfsstream": "@stable",
-        "phake/phake": "@stable",
-        "symfony/process": "@stable",
-        "phpunit/phpunit": "~8.0@stable",
-        "psy/psysh": "@stable",
-        "behat/behat": "@stable"
-    },
+  "require-dev": {
+    "php": ">=7.2",
+    "mikey179/vfsstream": "@stable",
+    "phake/phake": "@stable",
+    "symfony/process": "@stable",
+    "phpunit/phpunit": "~9.0@stable",
+    "psy/psysh": "@stable",
+    "behat/behat": "@stable"
+  },
 
-    "autoload": {
-        "psr-0": {
-            "QafooLabs\\Refactoring": "src/main/",
-            "QafooLabs\\Patches": "src/main/",
-            "QafooLabs\\Collections": "src/main/"
-        }
-    },
+  "autoload": {
+    "psr-0": {
+      "QafooLabs\\Refactoring": "src/main/",
+      "QafooLabs\\Patches": "src/main/",
+      "QafooLabs\\Collections": "src/main/"
+    }
+  },
 
-    "bin": ["src/bin/refactor"]
+  "bin": ["src/bin/refactor"]
 }
