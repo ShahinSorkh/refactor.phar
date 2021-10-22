@@ -1,7 +1,7 @@
 {
   "name": "qafoolabs/php-refactoring-browser",
   "description": "Refactoring Browser for PHP",
-  "license": "Apache2",
+  "license": "Apache-2.0",
 
   "authors": [
     { "name": "Benjamin Eberlei", "email": "kontakt@beberlei.de" },
@@ -9,21 +9,21 @@
   ],
 
   "require": {
-    "nikic/php-parser": "@stable",
-    "beberlei/assert": "@stable",
-    "symfony/finder": "~2.4@stable",
-    "symfony/console": "~2.4@stable",
-    "tomphp/patch-builder": "~0.1"
+    "nikic/php-parser": "~4.13.0",
+    "beberlei/assert": "~3.3.1",
+    "symfony/finder": "~2.8.52",
+    "symfony/console": "~2.8.52",
+    "tomphp/patch-builder": "~0.1.0"
   },
 
   "require-dev": {
-    "php": ">=7.2",
-    "mikey179/vfsstream": "@stable",
-    "phake/phake": "@stable",
-    "symfony/process": "@stable",
-    "phpunit/phpunit": "~9.0@stable",
-    "psy/psysh": "@stable",
-    "behat/behat": "@stable"
+    "php": ">=7.3",
+    "mikey179/vfsstream": "~1.6.10",
+    "phake/phake": "~4.1.0",
+    "symfony/process": "~5.3.7",
+    "phpunit/phpunit": "~9.5.10",
+    "psy/psysh": "~0.10.9",
+    "behat/behat": "~3.7.0"
   },
 
   "autoload": {

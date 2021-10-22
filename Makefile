@@ -15,7 +15,7 @@ test: phpunit behat
 phpunit:
 	rm -rf reports/phpunit
 	mkdir -p reports/phpunit
-	php vendor/bin/phpunit
+	php -dxdebug.mode=coverage vendor/bin/phpunit --log-junit reports/phpunit/default.xml
 
 behat:
 	rm -rf reports/behat
