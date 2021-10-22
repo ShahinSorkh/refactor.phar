@@ -20,7 +20,7 @@ phpunit:
 behat:
 	rm -rf reports/behat
 	mkdir -p reports/behat
-	php vendor/bin/behat -f junit -f progress -o reports/behat -o /dev/stdout
+	php vendor/bin/behat -f junit -o reports/behat -f progress -o std
 
 clean:
 	rm -f refactor.phar
