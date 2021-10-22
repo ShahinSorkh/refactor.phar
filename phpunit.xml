@@ -1,23 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         bootstrap="vendor/autoload.php"
->
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+backupGlobals="false" backupStaticAttributes="false" colors="true"
+convertErrorsToExceptions="true" convertNoticesToExceptions="true"
+convertWarningsToExceptions="true" processIsolation="false"
+stopOnFailure="false" bootstrap="vendor/autoload.php"
+xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+
+    <coverage>
+        <include>
+            <directory>src/main</directory>
+        </include>
+    </coverage>
     <testsuites>
         <testsuite name="PHP Refactoring Browser">
             <directory>src/test</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>src/main</directory>
-        </whitelist>
-    </filter>
 </phpunit>
