@@ -35,8 +35,8 @@ jobs:
         run: |
           mkdir -p artifacts
           cp refactor.phar artifacts
-          cp reports/phpunit/default.xml artifacts
-          cp reports/behat/default.xml artifacts
+          cp reports/phpunit/default.xml artifacts/behat.junitlog.xml
+          cp reports/behat/default.xml artifacts/phpunit.junitlog.xml
 
       - name: Upload result as release
         uses: ncipollo/release-action@v1
