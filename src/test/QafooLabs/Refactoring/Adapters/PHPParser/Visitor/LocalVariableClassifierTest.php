@@ -78,9 +78,9 @@ class LocalVariableClassifierTest extends TestCase
     public function givenParam_WhenClassification_FindAsAssignment()
     {
         $classifier = new LocalVariableClassifier();
-        $variable = new Param("foo");
+        $param = new Param(new Variable('foo'));
 
-        $classifier->enterNode($variable);
+        $classifier->enterNode($param);
 
         $this->assertEquals(array('foo' => array(-1)), $classifier->getAssignments());
     }
