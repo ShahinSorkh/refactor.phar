@@ -11,7 +11,7 @@ jobs:
       - name: Setup php
         uses: shivammathur/setup-php@2.13.0
         with:
-          php-version: "7.3"
+          php-version: "8.0"
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -23,7 +23,7 @@ jobs:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-
+            ${{ runner.os }}-php-8.0
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
