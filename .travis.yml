@@ -2,15 +2,11 @@ language: php
 before_script:
   - composer self-update
   - composer install --dev --prefer-dist
-script: php vendor/bin/phpunit; php vendor/bin/behat --format progress
+script: make test
 php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
+  - 7.3
+  - 7.4
+  - 8.0
 
 matrix:
-    fast_finish: true
-    allow_failures:
-        - php: hhvm
-        - php: 7
+  fast_finish: true

@@ -1,9 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-if ((!@include __DIR__ . '/../../../../autoload.php') && (!@include __DIR__ . '/../../vendor/autoload.php')) {
-    die("You must set up the project dependencies, run composer install");
-}
+require_once(dirname(__DIR__).'/vendor/autoload.php');
 
 use QafooLabs\Refactoring\Adapters\Symfony\CliApplication;
 
