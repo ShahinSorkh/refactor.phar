@@ -16,7 +16,7 @@ class Set implements \Countable, \IteratorAggregate
      * or hashCode. If you pass an object make sure it implements either
      * {__toString()} or the {@see Hashable} interface.
      *
-     * @param mixed $item
+     * @param Hashable|string $item
      */
     public function add($item)
     {
@@ -26,7 +26,7 @@ class Set implements \Countable, \IteratorAggregate
             return;
         }
 
-        $this->items[(string) $item] = $item;
+        $this->items[$item] = $item;
     }
 
     /**
@@ -38,7 +38,7 @@ class Set implements \Countable, \IteratorAggregate
     }
 
     /**
-     * @return Iterator
+     * @return Iterator<Hashable|string>
      */
     public function getIterator()
     {
