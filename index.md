@@ -7,7 +7,8 @@ layout: main
     do not contain all necessary pre-conditions and might mess up your code.
     Check the diffs carefully before applying the patches.
 
-[![Build Status](https://travis-ci.org/ShahinSorkh/refactor.phar.png)](https://travis-ci.org/ShahinSorkh/refactor.phar)
+[![CI](https://github.com/ShahinSorkh/refactor.phar/actions/workflows/main.yml/badge.svg)](https://github.com/ShahinSorkh/refactor.phar/actions/workflows/main.yml)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/ShahinSorkh/refactor.phar)
 
 Automatic Refactorings for PHP Code by generating diffs that describe
 the refactorings steps. To prevent simple mistakes during refactorings, an automated tool
@@ -113,26 +114,26 @@ All other use statements will be untouched, only new ones will be added.
 
 ## Roadmap {#roadmap}
 
-Not prioritized.
+_Not prioritized._
 
-Integration:
+### Integration: {#integration:}
 
-- Vim Plugin to apply refactorings from within Vim.
+- [ ] Vim Plugin to apply refactorings from within Vim.
 
-List of Refactorings to implement:
+### List of Refactorings to implement: {#list-of-refactorings-to-implement:}
 
-- Extract Method (Prototype Done)
-- Rename Local Variable (Prototype Done)
-- Optimize use statements (Done)
-- Convert Local Variable to Instance Variable (Prototype Done)
-- Rename Class PSR-0 aware (Done)
-- Rename Namespace PSR-0 aware (Done)
-- Convert Magic Value to Constant
-- Rename Method
-  - Private Methods Only first
-- Rename Instance Variable
-  - Private Variables Only First
-- Extract Interface
+- [ ] Extract Method _(Prototype Done)_
+- [ ] Rename Local Variable _(Prototype Done)_
+- [x] Optimize use statements
+- [ ] Convert Local Variable to Instance Variable _(Prototype Done)_
+- [x] Rename Class PSR-0 aware
+- [x] Rename Namespace PSR-0 aware
+- [ ] Convert Magic Value to Constant
+- [ ] Rename Method
+  - [ ] Private Methods Only first
+- [ ] Rename Instance Variable
+  - [ ] Private Variables Only First
+- [ ] Extract Interface
 
 ## Internals {#internals}
 
