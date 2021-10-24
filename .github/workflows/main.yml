@@ -1,4 +1,4 @@
-name: PHP Composer
+name: run tests
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        php_version: ["7.3", "7.4", "8.0"]
+        php_version: ["8.0"]
         os: ["ubuntu-latest"]
 
     steps:
