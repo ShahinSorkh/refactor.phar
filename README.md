@@ -1,8 +1,11 @@
 # PHP Refactoring Browser
 
-    Note: This software is under development and in alpha state. Refactorings
-    do not contain all necessary pre-conditions and might mess up your code.
-    Check the diffs carefully before applying the patches.
+> Note: This software is under development and in alpha state. Refactorings
+> do not contain all necessary pre-conditions and might mess up your code.
+> Check the diffs carefully before applying the patches.
+
+> Works fine on Linux.
+> Tests fail on macOS. I need someone to help.
 
 [![CI](https://github.com/ShahinSorkh/refactor.phar/actions/workflows/main.yml/badge.svg)](https://github.com/ShahinSorkh/refactor.phar/actions/workflows/main.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/ShahinSorkh/refactor.phar)
