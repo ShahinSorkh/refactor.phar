@@ -1,5 +1,5 @@
 {
-  "name": "qafoolabs/php-refactoring-browser",
+  "name": "shso/refactor.phar",
   "description": "Refactoring Browser for PHP",
   "license": "Apache-2.0",
 
@@ -27,10 +27,15 @@
   },
 
   "autoload": {
-    "psr-0": {
-      "QafooLabs\\Refactoring": "src/main/",
-      "QafooLabs\\Patches": "src/main/",
-      "QafooLabs\\Collections": "src/main/"
+    "psr-4": {
+      "QafooLabs\\": "src/"
+    }
+  },
+
+  "autoload-dev": {
+    "classmap": ["features/bootstrap"],
+    "psr-4": {
+      "Tests\\": "tests/"
     }
   },
 

@@ -6,14 +6,14 @@ convertWarningsToExceptions="true" processIsolation="false"
 stopOnFailure="false" bootstrap="vendor/autoload.php"
 xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
 
-    <coverage>
-        <include>
-            <directory>src/main</directory>
-        </include>
-    </coverage>
-    <testsuites>
-        <testsuite name="PHP Refactoring Browser">
-            <directory>src/test</directory>
-        </testsuite>
-    </testsuites>
+  <coverage>
+    <include>
+      <directory>src</directory>
+    </include>
+  </coverage>
+  <testsuites>
+    <testsuite name="PHP Refactoring Browser">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>

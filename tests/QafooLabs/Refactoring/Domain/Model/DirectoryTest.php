@@ -1,0 +1,48 @@
+<?php
+
+namespace Tests\QafooLabs\Refactoring\Domain\Model;
+
+use PHPUnit\Framework\TestCase;
+use QafooLabs\Refactoring\Domain\Model\Directory;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamWrapper;
+
+class DirectoryTest extends TestCase
+{
+    public function testFindAllPhpFilesRecursivly()
+    {
+        $directory = new Directory(__DIR__, __DIR__);
+        $files = $directory->findAllPhpFilesRecursivly();
+
+        $this->assertContainsOnly('QafooLabs\Refactoring\Domain\Model\File', $files);
+    }
+
+    public function testRemovesDuplicates()
+    {
+        vfsStreamWrapper::register();
+
+        $structure = array(
+            'src' => array(
+                'src' => array(),
+                'Foo' => array(
+                    'src' => array(),
+                    'Foo' => array(),
+                    'Bar.php' => '<?php'
+                ),
+            )
+        );
+
+        vfsStream::create($structure, vfsStream::setup('project'));
+        $dir = vfsStream::url('project/src');
+
+        $directory = new Directory($dir, $dir);
+        $files = $directory->findAllPhpFilesRecursivly();
+
+        $foundFiles = array();
+        foreach ($files as $f => $file) {
+            $foundFiles[] = $f;
+        }
+
+        $this->assertEquals(array('vfs://project/src/Foo/Bar.php'), $foundFiles);
+    }
+}

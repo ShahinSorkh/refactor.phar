@@ -7,7 +7,7 @@
 all: clean test build
 
 build:
-	php -d 'phar.readonly=Off' src/bin/compile
+	php -d 'phar.readonly=Off' bin/compile
 	chmod +x refactor.phar
 
 test: phpunit behat
