@@ -41,5 +41,5 @@
     }
   },
 
-  "bin": ["src/bin/refactor"]
+  "bin": ["bin/refactor"]
 }
