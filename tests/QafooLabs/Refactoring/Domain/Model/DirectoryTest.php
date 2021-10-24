@@ -43,6 +43,6 @@ class DirectoryTest extends TestCase
             $foundFiles[] = $f;
         }
 
-        $this->assertEquals(['vfs://project/src/Foo/Bar.php'], $foundFiles);
+        $this->assertEquals(['vfs://project'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Foo'.DIRECTORY_SEPARATOR.'Bar.php'], $foundFiles);
     }
 }

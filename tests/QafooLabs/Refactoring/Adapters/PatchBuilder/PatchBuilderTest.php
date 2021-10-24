@@ -13,15 +13,15 @@ class PatchBuilderTest extends TestCase
     protected function setUp(): void
     {
         $this->builder = new PatchBuilder(
-            "line1\n"
-            ."line2\n"
-            ."line3\n"
-            ."line4\n"
-            ."line5\n"
-            ."line6\n"
-            ."line7\n"
-            ."line8\n"
-            ."line9\n"
+            "line1".PHP_EOL
+            ."line2".PHP_EOL
+            ."line3".PHP_EOL
+            ."line4".PHP_EOL
+            ."line5".PHP_EOL
+            ."line6".PHP_EOL
+            ."line7".PHP_EOL
+            ."line8".PHP_EOL
+            ."line9".PHP_EOL
         );
     }
 
@@ -66,9 +66,9 @@ DIFF;
     public function test_change_token_alone_on_indented_line()
     {
         $this->builder = new PatchBuilder(
-            "line1\n"
-            ."    line2\n"
-            ."line3\n"
+            "line1".PHP_EOL
+            ."    line2".PHP_EOL
+            ."line3".PHP_EOL
         );
 
         $this->builder->changeToken(2, 'line2', 'linetwo');
@@ -89,9 +89,9 @@ DIFF;
     public function test_change_token_with_multiple_tokens_one_one_line()
     {
         $this->builder = new PatchBuilder(
-            "line1\n"
-            ."    echo \$var . ' = ' . \$var;\n"
-            ."line3\n"
+            "line1".PHP_EOL
+            ."    echo \$var . ' = ' . \$var;".PHP_EOL
+            ."line3".PHP_EOL
         );
 
         $this->builder->changeToken(2, 'var', 'variable');
@@ -112,9 +112,9 @@ DIFF;
     public function test_change_token_with_underscore()
     {
         $this->builder = new PatchBuilder(
-            "line1\n"
-            ."    echo \$my_variable;\n"
-            ."line3\n"
+            "line1".PHP_EOL
+            ."    echo \$my_variable;".PHP_EOL
+            ."line3".PHP_EOL
         );
 
         $this->builder->changeToken(2, 'my_variable', 'myVariable');
