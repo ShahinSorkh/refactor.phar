@@ -33,7 +33,7 @@ class DirectoryTest extends TestCase
         ];
 
         vfsStream::create($structure, vfsStream::setup('project'));
-        $dir = vfsStream::url('project'.DIRECTORY_SEPARATOR.'src');
+        $dir = vfsStream::url('project/src');
 
         $directory = new Directory($dir, $dir);
         $files = $directory->findAllPhpFilesRecursivly();
@@ -43,6 +43,6 @@ class DirectoryTest extends TestCase
             $foundFiles[] = $f;
         }
 
-        $this->assertEquals(['vfs://project'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Foo'.DIRECTORY_SEPARATOR.'Bar.php'], $foundFiles);
+        $this->assertEquals(['vfs://project/src/Foo/Bar.php'], $foundFiles);
     }
 }

@@ -34,31 +34,36 @@ class ExtractMethodTest extends TestCase
     {
         $patch = $this->refactoring->refactor(new File(
             'foo.php',
-            '<?php'.PHP_EOL
-            .'class Foo'.PHP_EOL
-            .'{'.PHP_EOL
-            .'    public function main()'.PHP_EOL
-            .'    {'.PHP_EOL
-            .'        echo "Hello World";'.PHP_EOL
-            .'    }'.PHP_EOL
-            .'}'.PHP_EOL
+            <<<'PHP'
+<?php
+class Foo
+{
+    public function main()
+    {
+        echo "Hello World";
+    }
+}
+PHP
         ), LineRange::fromString('6-6'), 'helloWorld');
 
         \Phake::verify($this->applyCommand)->apply(
-            '--- a/foo.php'.PHP_EOL
-            .'+++ b/foo.php'.PHP_EOL
-            .'@@ -3,6 +3,11 @@'.PHP_EOL
-            .' {'.PHP_EOL
-            .'     public function main()'.PHP_EOL
-            .'     {'.PHP_EOL
-            .'+        $this->helloWorld();'.PHP_EOL
-            .'+    }'.PHP_EOL
-            .'+'.PHP_EOL
-            .'+    private function helloWorld()'.PHP_EOL
-            .'+    {'.PHP_EOL
-            .'         echo "Hello World";'.PHP_EOL
-            .'     }'.PHP_EOL
-            .' }'.PHP_EOL
+            <<<'CODE'
+--- a/foo.php
++++ b/foo.php
+@@ -3,6 +3,11 @@
+ {
+     public function main()
+     {
++        $this->helloWorld();
++    }
++
++    private function helloWorld()
++    {
+         echo "Hello World";
+     }
+ }
+
+CODE
         );
     }
 
@@ -72,43 +77,48 @@ class ExtractMethodTest extends TestCase
 
         $patch = $this->refactoring->refactor(new File(
             'foo.php',
-            '<?php'.PHP_EOL
-            .'lass Foo'.PHP_EOL
-            .'{'.PHP_EOL
-            .'    public function main()'.PHP_EOL
-            .'    {'.PHP_EOL
-            .'        $foo = "bar";'.PHP_EOL
-            .'        $baz = array();'.PHP_EOL
-            .''.PHP_EOL
-            .'        $foo = strtolower($foo);'.PHP_EOL
-            .'        $baz[] = $foo;'.PHP_EOL
-            .''.PHP_EOL
-            .'        return new Something($foo, $baz);'.PHP_EOL
-            .'    }'.PHP_EOL
-            .'}'.PHP_EOL
+            <<<'PHP'
+<?php
+class Foo
+{
+    public function main()
+    {
+        $foo = "bar";
+        $baz = array();
+
+        $foo = strtolower($foo);
+        $baz[] = $foo;
+
+        return new Something($foo, $baz);
+    }
+}
+PHP
         ), LineRange::fromString('9-10'), 'extract');
 
         \Phake::verify($this->applyCommand)->apply(
-            '--- a/foo.php'.PHP_EOL
-            .'+++ b/foo.php'.PHP_EOL
-            .'@@ -6,9 +6,16 @@'.PHP_EOL
-            .'         $foo = "bar";'.PHP_EOL
-            .'         $baz = array();'.PHP_EOL
-            .''.PHP_EOL
-            .'+        list($foo, $baz) = $this->extract($foo, $baz);'.PHP_EOL
-            .'+'.PHP_EOL
-            .'+        return new Something($foo, $baz);'.PHP_EOL
-            .'+    }'.PHP_EOL
-            .'+'.PHP_EOL
-            .'+    private function extract($foo, $baz)'.PHP_EOL
-            .'+    {'.PHP_EOL
-            .'         $foo = strtolower($foo);'.PHP_EOL
-            .'         $baz[] = $foo;'.PHP_EOL
-            .''.PHP_EOL
-            .'-        return new Something($foo, $baz);'.PHP_EOL
-            .'+        return array($foo, $baz);'.PHP_EOL
-            .'     }'.PHP_EOL
-            .' }'.PHP_EOL
+            <<<'CODE'
+--- a/foo.php
++++ b/foo.php
+@@ -6,9 +6,16 @@
+         $foo = "bar";
+         $baz = array();
+
++        list($foo, $baz) = $this->extract($foo, $baz);
++
++        return new Something($foo, $baz);
++    }
++
++    private function extract($foo, $baz)
++    {
+         $foo = strtolower($foo);
+         $baz[] = $foo;
+
+-        return new Something($foo, $baz);
++        return array($foo, $baz);
+     }
+ }
+
+CODE
         );
     }
 }
