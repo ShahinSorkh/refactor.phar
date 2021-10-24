@@ -111,26 +111,26 @@ All other use statements will be untouched, only new ones will be added.
 
 ## Roadmap
 
-Not prioritized.
+_Not prioritized._
 
-Integration:
+### Integration:
 
-- Vim Plugin to apply refactorings from within Vim.
+- [ ] Vim Plugin to apply refactorings from within Vim.
 
-List of Refactorings to implement:
+### List of Refactorings to implement:
 
-- Extract Method (Prototype Done)
-- Rename Local Variable (Prototype Done)
-- Optimize use statements (Done)
-- Convert Local Variable to Instance Variable (Prototype Done)
-- Rename Class PSR-0 aware (Done)
-- Rename Namespace PSR-0 aware (Done)
-- Convert Magic Value to Constant
-- Rename Method
-  - Private Methods Only first
-- Rename Instance Variable
-  - Private Variables Only First
-- Extract Interface
+- [-] Extract Method (Prototype Done)
+- [-] Rename Local Variable (Prototype Done)
+- [x] Optimize use statements (Done)
+- [-] Convert Local Variable to Instance Variable (Prototype Done)
+- [x] Rename Class PSR-0 aware (Done)
+- [x] Rename Namespace PSR-0 aware (Done)
+- [ ] Convert Magic Value to Constant
+- [ ] Rename Method
+  - [ ] Private Methods Only first
+- [ ] Rename Instance Variable
+  - [ ] Private Variables Only First
+- [ ] Extract Interface
 
 ## Internals
 
