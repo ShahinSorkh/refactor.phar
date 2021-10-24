@@ -119,12 +119,12 @@ _Not prioritized._
 
 ### List of Refactorings to implement:
 
-- [ ] Extract Method (Prototype Done)
-- [ ] Rename Local Variable (Prototype Done)
-- [x] Optimize use statements (Done)
-- [ ] Convert Local Variable to Instance Variable (Prototype Done)
-- [x] Rename Class PSR-0 aware (Done)
-- [x] Rename Namespace PSR-0 aware (Done)
+- [ ] Extract Method _(Prototype Done)_
+- [ ] Rename Local Variable _(Prototype Done)_
+- [x] Optimize use statements
+- [ ] Convert Local Variable to Instance Variable _(Prototype Done)_
+- [x] Rename Class PSR-0 aware
+- [x] Rename Namespace PSR-0 aware
 - [ ] Convert Magic Value to Constant
 - [ ] Rename Method
   - [ ] Private Methods Only first
