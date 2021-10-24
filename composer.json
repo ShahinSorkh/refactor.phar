@@ -18,11 +18,11 @@
   },
 
   "require-dev": {
-    "php": ">=7.3",
+    "php": "^7.2.24||^8.0",
     "mikey179/vfsstream": "~1.6.10",
     "phake/phake": "~4.1.0",
     "symfony/process": "~5.3.7",
-    "phpunit/phpunit": "~9.5.10",
+    "phpunit/phpunit": "~8.5.21",
     "psy/psysh": "~0.10.9",
     "behat/behat": "~3.7.0",
     "friendsofphp/php-cs-fixer": "^3.2"
@@ -38,6 +38,12 @@
     "classmap": ["features/bootstrap"],
     "psr-4": {
       "Tests\\": "tests/"
+    }
+  },
+
+  "config": {
+    "platform": {
+      "php": "7.2.24"
     }
   },
 
