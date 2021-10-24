@@ -16,7 +16,9 @@ jobs:
           - 7.4
           - 7.3
           - 7.2
-        os: ["ubuntu-latest"]
+        os:
+          - ubuntu-latest
+          - macos-latest
 
     steps:
       - uses: actions/checkout@v2
