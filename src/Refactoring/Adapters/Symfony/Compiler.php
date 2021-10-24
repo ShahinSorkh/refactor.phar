@@ -2,6 +2,7 @@
 
 namespace QafooLabs\Refactoring\Adapters\Symfony;
 
+use Phar;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
