@@ -4,21 +4,17 @@ namespace QafooLabs\Refactoring\Domain\Model\EditingAction;
 
 use QafooLabs\Refactoring\Domain\Model\EditingAction;
 use QafooLabs\Refactoring\Domain\Model\EditorBuffer;
-use QafooLabs\Refactoring\Domain\Model\MethodSignature;
-use QafooLabs\Refactoring\Domain\Model\LineRange;
-use QafooLabs\Refactoring\Domain\Model\LineCollection;
 use QafooLabs\Refactoring\Domain\Model\IndentationDetector;
+use QafooLabs\Refactoring\Domain\Model\LineCollection;
+use QafooLabs\Refactoring\Domain\Model\LineRange;
+use QafooLabs\Refactoring\Domain\Model\MethodSignature;
 
 class ReplaceWithMethodCall implements EditingAction
 {
-    /**
-     * @var LineRange
-     */
+    /** @var LineRange */
     private $range;
 
-    /**
-     * @var MethodSignature
-     */
+    /** @var MethodSignature */
     private $newMethod;
 
     public function __construct(LineRange $range, MethodSignature $newMethod)
@@ -31,7 +27,7 @@ class ReplaceWithMethodCall implements EditingAction
     {
         $extractedCode = $buffer->getLines($this->range);
 
-        $buffer->replace($this->range, array($this->getIndent($extractedCode) . $this->getMethodCall()));
+        $buffer->replace($this->range, [$this->getIndent($extractedCode).$this->getMethodCall()]);
     }
 
     /**
@@ -69,13 +65,13 @@ class ReplaceWithMethodCall implements EditingAction
             return;
         }
 
-        $returnVariable = '$' . reset($returnVars);
+        $returnVariable = '$'.reset($returnVars);
 
         if ($numVariables > 1) {
-            $returnVariable = 'list(' . $this->createVariableList($returnVars) . ')';
+            $returnVariable = 'list('.$this->createVariableList($returnVars).')';
         }
 
-        return $returnVariable . ' = ';
+        return $returnVariable.' = ';
     }
 
     /**
@@ -86,7 +82,7 @@ class ReplaceWithMethodCall implements EditingAction
     private function createVariableList(array $variables)
     {
         return implode(', ', array_map(function ($variableName) {
-            return '$' . $variableName;
+            return '$'.$variableName;
         }, $variables));
     }
 }

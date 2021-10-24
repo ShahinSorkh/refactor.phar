@@ -2,27 +2,23 @@
 
 namespace QafooLabs\Refactoring\Domain\Model\EditingAction;
 
+use QafooLabs\Refactoring\Domain\Model\DefinedVariables;
 use QafooLabs\Refactoring\Domain\Model\EditingAction;
 use QafooLabs\Refactoring\Domain\Model\EditorBuffer;
-use QafooLabs\Refactoring\Domain\Model\DefinedVariables;
 use QafooLabs\Refactoring\Domain\Model\Variable;
 
 class LocalVariableToInstance implements EditingAction
 {
-    /**
-     * @var DefinedVariables
-     */
+    /** @var DefinedVariables */
     private $definedVars;
 
-    /**
-     * @var Variable
-     */
+    /** @var Variable */
     private $variable;
 
     public function __construct(DefinedVariables $definedVars, Variable $variable)
     {
         $this->definedVars = $definedVars;
-        $this->variable    = $variable;
+        $this->variable = $variable;
     }
 
     public function performEdit(EditorBuffer $buffer)

@@ -1,34 +1,19 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
-
 
 namespace QafooLabs\Refactoring\Adapters\TokenReflection;
 
-use PhpParser\NodeTraverser;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\Node\Stmt\Property;
+use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LineRangeNodeCollector;
-use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LineRangeStatementCollector;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\PhpNameCollector;
-use QafooLabs\Refactoring\Domain\Services\CodeAnalysis;
-use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Domain\Model\File;
+use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Domain\Model\PhpClass;
 use QafooLabs\Refactoring\Domain\Model\PhpName;
-use function Psy\sh;
+use QafooLabs\Refactoring\Domain\Services\CodeAnalysis;
 
 class StaticCodeAnalysis extends CodeAnalysis
 {
@@ -56,7 +41,7 @@ class StaticCodeAnalysis extends CodeAnalysis
         $method = $this->findMatchingMethod($file, $range);
 
         if ($method === null) {
-            throw new \InvalidArgumentException("Could not find method end line.");
+            throw new \InvalidArgumentException('Could not find method end line.');
         }
 
         return $method->getEndLine();
@@ -67,7 +52,7 @@ class StaticCodeAnalysis extends CodeAnalysis
         $method = $this->findMatchingMethod($file, $range);
 
         if ($method === null) {
-            throw new \InvalidArgumentException("Could not find method start line.");
+            throw new \InvalidArgumentException('Could not find method start line.');
         }
 
         return $method->getStartLine();
@@ -91,9 +76,11 @@ class StaticCodeAnalysis extends CodeAnalysis
             }
         }
 
-        if ($lastPropertyLine) return $lastPropertyLine;
+        if ($lastPropertyLine) {
+            return $lastPropertyLine;
+        }
 
-        throw new \InvalidArgumentException("Could not find method start line.");
+        throw new \InvalidArgumentException('Could not find method start line.');
     }
 
     public function isInsideMethod(File $file, LineRange $range)
@@ -102,19 +89,20 @@ class StaticCodeAnalysis extends CodeAnalysis
     }
 
     /**
-     * @param File $file
      * @return PhpClass[]
      */
     public function findClasses(File $file)
     {
-        $classes = array();
+        $classes = [];
         $ast = $this->parser->parse($file->getCode());
         $collector = new PhpNameCollector;
         $this->traverser->addVisitor($collector);
         $this->traverser->traverse($ast);
 
         foreach ($collector->collectedNameDeclarations() as $node) {
-            if ($node['type'] !== 'class') continue;
+            if ($node['type'] !== 'class') {
+                continue;
+            }
 
             $namespace = $collector->namespaceOfClass($node);
             $classes[] = new PhpClass(
@@ -139,7 +127,5 @@ class StaticCodeAnalysis extends CodeAnalysis
                 return $node;
             }
         }
-
-        return null;
     }
 }

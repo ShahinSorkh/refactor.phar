@@ -7,14 +7,10 @@ use QafooLabs\Refactoring\Domain\Model\EditorBuffer;
 
 class AddProperty implements EditingAction
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     private $line;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $propertyName;
 
     /**
@@ -23,15 +19,15 @@ class AddProperty implements EditingAction
      */
     public function __construct($line, $propertyName)
     {
-        $this->line         = $line;
+        $this->line = $line;
         $this->propertyName = $propertyName;
     }
 
     public function performEdit(EditorBuffer $buffer)
     {
-        $buffer->append($this->line, array(
-            '    private $' . $this->propertyName . ';',
-            ''
-        ));
+        $buffer->append($this->line, [
+            '    private $'.$this->propertyName.';',
+            '',
+        ]);
     }
 }

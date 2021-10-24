@@ -9,7 +9,6 @@ interface PhpNameScanner
     /**
      * Find all php names in the file.
      *
-     * @param File $file
      * @return PhpNameOccurance[]
      */
     public function findNames(File $file);

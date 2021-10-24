@@ -15,8 +15,6 @@ interface Editor
 
     /**
      * Save all buffers.
-     *
-     * @return void
      */
     public function save();
 }

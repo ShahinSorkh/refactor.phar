@@ -2,31 +2,20 @@
 
 namespace QafooLabs\Refactoring\Application;
 
-use QafooLabs\Refactoring\Domain\Model\File;
-use QafooLabs\Refactoring\Domain\Model\Variable;
-use QafooLabs\Refactoring\Domain\Model\DefinedVariables;
-use QafooLabs\Refactoring\Domain\Model\LineRange;
-use QafooLabs\Refactoring\Domain\Model\RefactoringException;
-use QafooLabs\Refactoring\Domain\Model\EditingSession;
-
-use QafooLabs\Refactoring\Domain\Services\VariableScanner;
-use QafooLabs\Refactoring\Domain\Services\CodeAnalysis;
-use QafooLabs\Refactoring\Domain\Services\Editor;
 use QafooLabs\Refactoring\Domain\Model\EditingAction\RenameVariable;
+use QafooLabs\Refactoring\Domain\Model\File;
+use QafooLabs\Refactoring\Domain\Model\RefactoringException;
+use QafooLabs\Refactoring\Domain\Model\Variable;
 
 /**
- * Rename Local Variable Refactoring
+ * Rename Local Variable Refactoring.
  */
 class RenameLocalVariable extends SingleFileRefactoring
 {
-    /**
-     * @var Variable
-     */
+    /** @var Variable */
     private $oldName;
 
-    /**
-     * @var Variable
-     */
+    /** @var Variable */
     private $newName;
 
     /**
@@ -51,7 +40,7 @@ class RenameLocalVariable extends SingleFileRefactoring
 
     private function assertVariableIsLocal(Variable $variable)
     {
-        if ( ! $variable->isLocal()) {
+        if (!$variable->isLocal()) {
             throw RefactoringException::variableNotLocal($variable);
         }
     }
@@ -60,7 +49,7 @@ class RenameLocalVariable extends SingleFileRefactoring
     {
         $definedVariables = $this->getDefinedVariables();
 
-        if ( ! $definedVariables->contains($this->oldName)) {
+        if (!$definedVariables->contains($this->oldName)) {
             throw RefactoringException::variableNotInRange($this->oldName, $selectedMethodLineRange);
         }
 

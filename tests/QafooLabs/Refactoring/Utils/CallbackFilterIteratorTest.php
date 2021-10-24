@@ -1,33 +1,21 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */ 
 
 namespace Tests\QafooLabs\Refactoring\Utils;
 
-use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Utils\CallbackFilterIterator;
 
 class CallbackFilterIteratorTest extends TestCase
 {
-    public function testFilterEmptyElements()
+    public function test_filter_empty_elements()
     {
         $values = new CallbackFilterIterator(
-            new ArrayIterator(array(1, null, false, "", 2)),
+            new \ArrayIterator([1, null, false, '', 2]),
             function ($value) {
                 return !empty($value);
             }
         );
 
-        $this->assertEquals(array(1, 2), array_values(iterator_to_array($values)));
+        $this->assertEquals([1, 2], array_values(iterator_to_array($values)));
     }
 }

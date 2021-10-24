@@ -4,9 +4,8 @@ namespace Tests\QafooLabs\Refactoring\Domain\Model\EditingAction;
 
 use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Domain\Model\EditingAction\AddMethod;
-use QafooLabs\Refactoring\Domain\Model\MethodSignature;
-use QafooLabs\Refactoring\Domain\Model\Line;
 use QafooLabs\Refactoring\Domain\Model\LineCollection;
+use QafooLabs\Refactoring\Domain\Model\MethodSignature;
 
 class AddMethodTest extends TestCase
 {
@@ -14,12 +13,12 @@ class AddMethodTest extends TestCase
 
     private $buffer;
 
-    protected function setUp():void
+    protected function setUp(): void
     {
         $this->buffer = $this->createMock('QafooLabs\Refactoring\Domain\Model\EditorBuffer');
     }
 
-    public function testItIsAnEditingAction()
+    public function test_it_is_an_editing_action()
     {
         $this->assertInstanceOf(
             'QafooLabs\Refactoring\Domain\Model\EditingAction',
@@ -27,87 +26,87 @@ class AddMethodTest extends TestCase
         );
     }
 
-    public function testBufferAppendIsPerformedAtTheGivenLineNumber()
+    public function test_buffer_append_is_performed_at_the_given_line_number()
     {
         $lineNumber = 27;
 
         $this->buffer
-             ->expects($this->once())
-             ->method('append')
-             ->with($this->equalTo($lineNumber), $this->anything());
+            ->expects($this->once())
+            ->method('append')
+            ->with($this->equalTo($lineNumber), $this->anything());
 
         $action = new AddMethod($lineNumber, new MethodSignature('test'), new LineCollection());
 
         $action->performEdit($this->buffer);
     }
 
-    public function testAppendsMethod()
+    public function test_appends_method()
     {
         $action = new AddMethod(0, new MethodSignature('testMethod'), new LineCollection());
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private function testMethod()',
             '    {',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
-    public function testReturnStatementForSingleVariable()
+    public function test_return_statement_for_single_variable()
     {
         $action = new AddMethod(
             0,
-            $this->createMethodSignatureWithReturnVars(array('returnVar')),
+            $this->createMethodSignatureWithReturnVars(['returnVar']),
             new LineCollection()
         );
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private function testMethod()',
             '    {',
             '',
             '        return $returnVar;',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
-    public function testReturnStatementForSingleVariableHasCorrectName()
+    public function test_return_statement_for_single_variable_has_correct_name()
     {
         $action = new AddMethod(
             0,
-            $this->createMethodSignatureWithReturnVars(array('specialVar')),
+            $this->createMethodSignatureWithReturnVars(['specialVar']),
             new LineCollection()
         );
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private function testMethod()',
             '    {',
             '',
             '        return $specialVar;',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
-    public function testReturnStatementForMultipleVariables()
+    public function test_return_statement_for_multiple_variables()
     {
         $action = new AddMethod(
             0,
-            $this->createMethodSignatureWithReturnVars(array('ret1', 'ret2')),
+            $this->createMethodSignatureWithReturnVars(['ret1', 'ret2']),
             new LineCollection()
         );
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private function testMethod()',
             '    {',
             '',
             '        return array($ret1, $ret2);',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
-    public function testMethodNameIsUsed()
+    public function test_method_name_is_used()
     {
         $action = new AddMethod(
             0,
@@ -115,15 +114,15 @@ class AddMethodTest extends TestCase
             new LineCollection()
         );
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private function realMethodName()',
             '    {',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
-    public function testStaticMethodsAreDefinedCorrectly()
+    public function test_static_methods_are_defined_correctly()
     {
         $action = new AddMethod(
             0,
@@ -134,74 +133,74 @@ class AddMethodTest extends TestCase
             new LineCollection()
         );
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private static function realMethodName()',
             '    {',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
-    public function testMethodArgumentsAreDefinedCorrectly()
+    public function test_method_arguments_are_defined_correctly()
     {
         $action = new AddMethod(
             0,
             new MethodSignature(
                 'testMethod',
                 MethodSignature::IS_PRIVATE,
-                array('param1', 'param2')
+                ['param1', 'param2']
             ),
             new LineCollection()
         );
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private function testMethod($param1, $param2)',
             '    {',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
-    public function testSelectedCodeIsAdded()
+    public function test_selected_code_is_added()
     {
         $action = new AddMethod(
             0,
-            $this->createMethodSignatureWithReturnVars(array()),
-            LineCollection::createFromArray(array(
-                'echo "Hello World!";'
-            ))
+            $this->createMethodSignatureWithReturnVars([]),
+            LineCollection::createFromArray([
+                'echo "Hello World!";',
+            ])
         );
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private function testMethod()',
             '    {',
             '        echo "Hello World!";',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
-    public function testSelectedCodeIsAddedWithCorrectIndetations()
+    public function test_selected_code_is_added_with_correct_indetations()
     {
         $action = new AddMethod(
             0,
-            $this->createMethodSignatureWithReturnVars(array()),
-            LineCollection::createFromArray(array(
+            $this->createMethodSignatureWithReturnVars([]),
+            LineCollection::createFromArray([
                 '    if ($something) {',
                 '        echo "Hello World!";',
-                '    }'
-            ))
+                '    }',
+            ])
         );
 
-        $this->assertGeneratedCodeMatches(array(
+        $this->assertGeneratedCodeMatches([
             '',
             '    private function testMethod()',
             '    {',
             '        if ($something) {',
             '            echo "Hello World!";',
             '        }',
-            '    }'
-        ), $action);
+            '    }',
+        ], $action);
     }
 
     private function assertGeneratedCodeMatches(array $expected, AddMethod $action)
@@ -216,7 +215,7 @@ class AddMethodTest extends TestCase
         return new MethodSignature(
             'testMethod',
             MethodSignature::IS_PRIVATE,
-            array(),
+            [],
             $returnVars
         );
     }
@@ -224,8 +223,8 @@ class AddMethodTest extends TestCase
     private function makeBufferAppendExpectCode(array $codeLines)
     {
         $this->buffer
-             ->expects($this->once())
-             ->method('append')
-             ->with($this->anything(), $this->equalTo($codeLines));
+            ->expects($this->once())
+            ->method('append')
+            ->with($this->anything(), $this->equalTo($codeLines));
     }
 }

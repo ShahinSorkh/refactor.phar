@@ -1,20 +1,6 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
-
 
 namespace QafooLabs\Refactoring\Domain\Model;
-
-use Closure;
 
 /**
  * Defined variables that are used or assigned.
@@ -35,7 +21,7 @@ class DefinedVariables
      */
     protected $changeAccess;
 
-    public function __construct(array $readAccess = array(), array $changeAccess = array())
+    public function __construct(array $readAccess = [], array $changeAccess = [])
     {
         $this->readAccess = $readAccess;
         $this->changeAccess = $changeAccess;
@@ -56,8 +42,8 @@ class DefinedVariables
         $all = $this->readAccess;
 
         foreach ($this->changeAccess as $name => $lines) {
-            if ( ! isset($all[$name])) {
-                $all[$name] = array();
+            if (!isset($all[$name])) {
+                $all[$name] = [];
             }
 
             $all[$name] = array_unique(array_merge($all[$name], $lines));
@@ -75,10 +61,10 @@ class DefinedVariables
      */
     public function contains(Variable $variable)
     {
-        return (
-            isset($this->readAccess[$variable->getName()]) ||
-            isset($this->changeAccess[$variable->getName()])
-        );
+        return
+            isset($this->readAccess[$variable->getName()])
+            || isset($this->changeAccess[$variable->getName()])
+        ;
     }
 
     public function variablesFromSelectionUsedAfter(DefinedVariables $selection)
@@ -88,7 +74,9 @@ class DefinedVariables
             $selection,
             function ($lastUsedLine, $endLine) {
                 return $lastUsedLine > $endLine;
-            }, 'max');
+            },
+            'max'
+        );
     }
 
     public function variablesFromSelectionUsedBefore(DefinedVariables $selection)
@@ -98,12 +86,14 @@ class DefinedVariables
             $selection,
             function ($lastUsedLine, $endLine) {
                 return $lastUsedLine < $endLine;
-            }, 'min');
+            },
+            'min'
+        );
     }
 
-    private function filterVariablesFromSelection($selectedVariables, DefinedVariables $selection, Closure $filter, $reducer)
+    private function filterVariablesFromSelection($selectedVariables, DefinedVariables $selection, \Closure $filter, $reducer)
     {
-        $variablesUsed = array();
+        $variablesUsed = [];
 
         $compareLine = $reducer == 'max'
             ? $selection->endLine()
@@ -111,7 +101,7 @@ class DefinedVariables
         $knownVariables = $this->all();
 
         foreach ($selectedVariables as $variable) {
-            if ( ! isset($knownVariables[$variable])) {
+            if (!isset($knownVariables[$variable])) {
                 continue;
             }
 

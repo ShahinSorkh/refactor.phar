@@ -1,15 +1,4 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace QafooLabs\Refactoring\Adapters\Symfony;
 
@@ -17,7 +6,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 /**
- * The Compiler class compiles composer into a phar
+ * The Compiler class compiles composer into a phar.
  *
  * Converted from Composer's compiler.
  *
@@ -27,6 +16,7 @@ use Symfony\Component\Process\Process;
 class Compiler
 {
     private $version;
+
     private $directory;
 
     public function __construct($directory)
@@ -35,7 +25,7 @@ class Compiler
     }
 
     /**
-     * Compiles composer into a single phar file
+     * Compiles composer into a single phar file.
      *
      * @throws \RuntimeException
      */
@@ -81,7 +71,7 @@ class Compiler
             ->name('*.php')
             ->exclude('test')
             ->exclude('features')
-            ->in($this->directory . '/vendor/')
+            ->in($this->directory.'/vendor/')
         ;
 
         foreach ($finder as $file) {
@@ -100,12 +90,12 @@ class Compiler
 
     private function addFile($phar, $file, $strip = true)
     {
-        $path = str_replace($this->directory . DIRECTORY_SEPARATOR, '', $file->getRealPath());
+        $path = str_replace($this->directory.DIRECTORY_SEPARATOR, '', $file->getRealPath());
 
         $content = file_get_contents($file);
         if ($strip) {
             $content = $this->stripWhitespace($content);
-        } elseif ('LICENSE' === basename($file)) {
+        } elseif (basename($file) === 'LICENSE') {
             $content = "\n".$content."\n";
         }
 
@@ -116,7 +106,7 @@ class Compiler
 
     private function addRefactorBin($phar)
     {
-        $content = file_get_contents($this->directory . '/bin/refactor');
+        $content = file_get_contents($this->directory.'/bin/refactor');
         $content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
         $phar->addFromString('bin/refactor', $content);
     }
@@ -124,7 +114,8 @@ class Compiler
     /**
      * Removes whitespace from a PHP source string while preserving line numbers.
      *
-     * @param  string $source A PHP string
+     * @param string $source A PHP string
+     *
      * @return string The PHP string with the whitespace removed
      */
     private function stripWhitespace($source)
@@ -137,9 +128,9 @@ class Compiler
         foreach (token_get_all($source) as $token) {
             if (is_string($token)) {
                 $output .= $token;
-            } elseif (in_array($token[0], array(T_COMMENT, T_DOC_COMMENT))) {
+            } elseif (in_array($token[0], [T_COMMENT, T_DOC_COMMENT])) {
                 $output .= str_repeat("\n", substr_count($token[1], "\n"));
-            } elseif (T_WHITESPACE === $token[0]) {
+            } elseif ($token[0] === T_WHITESPACE) {
                 // reduce wide spaces
                 $whitespace = preg_replace('{[ \t]+}', ' ', $token[1]);
                 // normalize newlines to \n

@@ -2,26 +2,23 @@
 
 namespace Tests\QafooLabs\Refactoring\Adapters\PHPParser\Visitor;
 
-use PHPUnit\Framework\TestCase;
-use PhpParser\Parser;
-use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
-
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LineRangeStatementCollector;
-use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\NodeConnector;
+use QafooLabs\Refactoring\Domain\Model\LineRange;
 
 class LineRangeStatementCollectorTest extends TestCase
 {
     /**
      * @test
      */
-    public function givenNestedStatements_WhenCollecting_ThenOnlyCollectTopLevel()
+    public function given_nested_statements__when_collecting__then_only_collect_top_level()
     {
         $stmts = $this->statements('$this->foo(bar(baz()));');
 
-        $collector = new LineRangeStatementCollector($this->range("2-2"));
+        $collector = new LineRangeStatementCollector($this->range('2-2'));
 
         $this->traverse($stmts, $collector);
 
@@ -35,7 +32,7 @@ class LineRangeStatementCollectorTest extends TestCase
     {
         $this->connect($stmts);
 
-        $traverser     = new NodeTraverser;
+        $traverser = new NodeTraverser;
         $traverser->addVisitor(new NodeConnector);
         $traverser->addVisitor($visitor);
         $traverser->traverse($stmts);
@@ -45,8 +42,9 @@ class LineRangeStatementCollectorTest extends TestCase
 
     private function connect($stmts)
     {
-        $traverser     = new NodeTraverser;
+        $traverser = new NodeTraverser;
         $traverser->addVisitor(new NodeConnector);
+
         return $traverser->traverse($stmts);
     }
 
@@ -57,12 +55,12 @@ class LineRangeStatementCollectorTest extends TestCase
 
     private function statements($code)
     {
-        if (strpos($code, "<?php") === false) {
-            $code = "<?php\n" . $code;
+        if (strpos($code, '<?php') === false) {
+            $code = "<?php\n".$code;
         }
 
         $parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7);
-        return $parser->parse($code);
 
+        return $parser->parse($code);
     }
 }

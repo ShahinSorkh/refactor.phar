@@ -1,29 +1,17 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace Tests\QafooLabs\Refactoring\Utils;
 
-use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Utils\TransformIterator;
 
 class TransformIteratorTest extends TestCase
 {
-    public function testTransformValues()
+    public function test_transform_values()
     {
-        $strings = new ReverseStringTransformIterator(new ArrayIterator(array('Hello', 'World')));
+        $strings = new ReverseStringTransformIterator(new \ArrayIterator(['Hello', 'World']));
 
-        $this->assertEquals(array('olleH', 'dlroW'), iterator_to_array($strings));
+        $this->assertEquals(['olleH', 'dlroW'], iterator_to_array($strings));
     }
 }
 

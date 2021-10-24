@@ -8,9 +8,11 @@ use QafooLabs\Refactoring\Domain\Model\File;
 
 class StaticCodeAnalysisTest extends TestCase
 {
-    public function testNamespaceDeclarationForFileWithoutNamespace_isInLine0()
+    public function test_namespace_declaration_for_file_without_namespace_is_in_line0()
     {
-        $file = new File('without-namespace.php', <<<'PHP'
+        $file = new File(
+            'without-namespace.php',
+            <<<'PHP'
 <?php
 
 class WithoutNamespace

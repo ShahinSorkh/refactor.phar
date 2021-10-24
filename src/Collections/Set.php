@@ -2,16 +2,12 @@
 
 namespace QafooLabs\Collections;
 
-use Countable;
-use IteratorAggregate;
-use ArrayIterator;
-
 /**
- * Unique Set of Elements
+ * Unique Set of Elements.
  */
-class Set implements Countable, IteratorAggregate
+class Set implements \Countable, \IteratorAggregate
 {
-    private $items = array();
+    private $items = [];
 
     /**
      * Add a new item to the set.
@@ -21,7 +17,6 @@ class Set implements Countable, IteratorAggregate
      * {__toString()} or the {@see Hashable} interface.
      *
      * @param mixed $item
-     * @return void
      */
     public function add($item)
     {
@@ -31,7 +26,7 @@ class Set implements Countable, IteratorAggregate
             return;
         }
 
-        $this->items[(string)$item] = $item;
+        $this->items[(string) $item] = $item;
     }
 
     /**
@@ -47,6 +42,6 @@ class Set implements Countable, IteratorAggregate
      */
     public function getIterator()
     {
-        return new ArrayIterator(array_values($this->items));
+        return new \ArrayIterator(array_values($this->items));
     }
 }

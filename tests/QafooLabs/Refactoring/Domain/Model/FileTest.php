@@ -2,29 +2,29 @@
 
 namespace Tests\QafooLabs\Refactoring\Domain\Model;
 
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Domain\Model\File;
 use QafooLabs\Refactoring\Domain\Model\PhpName;
-use org\bovigo\vfs\vfsStream;
 
 class FileTest extends TestCase
 {
     private function createFileSystem()
     {
-        return vfsStream::setup('project', 0644,
-            array(
-                'src'=>
-                array(
-                    'Foo'=>
-                    array(
-                        'Bar.php'=>'<?php noop() ?>'
-                    )
-                )
-            )
+        return vfsStream::setup(
+            'project',
+            0644,
+            [
+                'src' => [
+                    'Foo' => [
+                        'Bar.php' => '<?php noop() ?>',
+                    ],
+                ],
+            ]
         );
     }
 
-    public function testGetRelativePathRespectsMixedWindowsPathsAndWorkingDirectoryTrailingSlashs()
+    public function test_get_relative_path_respects_mixed_windows_paths_and_working_directory_trailing_slashs()
     {
         $root = $this->createFileSystem();
         $workingDir = $root->getChild('src')->url().'/';
@@ -37,7 +37,7 @@ class FileTest extends TestCase
         $this->assertEquals("Foo\Bar.php", $file->getRelativePath());
     }
 
-    public function testRelativePathConstructionForAbsoluteVFSFiles()
+    public function test_relative_path_construction_for_absolute_vfs_files()
     {
         $src = $this->createFileSystem()->getChild('src')->url();
         $bar = $src.DIRECTORY_SEPARATOR.'Foo'.DIRECTORY_SEPARATOR.'Bar.php';
@@ -46,18 +46,21 @@ class FileTest extends TestCase
         $this->assertEquals('vfs://project/src/Foo/Bar.php', $file->getRelativePath());
     }
 
-    static public function dataExtractPsr0ClassName()
+    public static function dataExtractPsr0ClassName()
     {
-        return array(
-            array(new PhpName('Foo', 'Foo'), 'src'.DIRECTORY_SEPARATOR.'Foo.php'),
-            array(new PhpName('Foo\Bar', 'Bar'), 'src'.DIRECTORY_SEPARATOR.'Foo'.DIRECTORY_SEPARATOR.'Bar.php'),
-        );
+        return [
+            [new PhpName('Foo', 'Foo'), 'src'.DIRECTORY_SEPARATOR.'Foo.php'],
+            [new PhpName('Foo\Bar', 'Bar'), 'src'.DIRECTORY_SEPARATOR.'Foo'.DIRECTORY_SEPARATOR.'Bar.php'],
+        ];
     }
 
     /**
      * @dataProvider dataExtractPsr0ClassName
+     *
+     * @param mixed $expectedClassName
+     * @param mixed $fileName
      */
-    public function testExtractPsr0ClassName($expectedClassName, $fileName)
+    public function test_extract_psr0_class_name($expectedClassName, $fileName)
     {
         $file = new File($fileName, '<?php');
         $actualClassName = $file->extractPsr0ClassName();

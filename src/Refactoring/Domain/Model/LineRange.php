@@ -1,16 +1,4 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
-
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
@@ -19,12 +7,14 @@ namespace QafooLabs\Refactoring\Domain\Model;
  */
 class LineRange
 {
-    private $lines = array();
+    private $lines = [];
 
     /**
+     * @param mixed $line
+     *
      * @return LineRange
      */
-    static public function fromSingleLine($line)
+    public static function fromSingleLine($line)
     {
         $list = new self();
         $list->lines[$line] = $line;
@@ -33,9 +23,12 @@ class LineRange
     }
 
     /**
+     * @param mixed $start
+     * @param mixed $end
+     *
      * @return LineRange
      */
-    static public function fromLines($start, $end)
+    public static function fromLines($start, $end)
     {
         $list = new self();
 
@@ -47,11 +40,13 @@ class LineRange
     }
 
     /**
+     * @param mixed $range
+     *
      * @return LineRange
      */
-    static public function fromString($range)
+    public static function fromString($range)
     {
-        list($start, $end) = explode("-", $range);
+        [$start, $end] = explode('-', $range);
 
         return self::fromLines($start, $end);
     }
@@ -63,12 +58,12 @@ class LineRange
 
     public function getStart()
     {
-        return (int)min($this->lines);
+        return (int) min($this->lines);
     }
 
     public function getEnd()
     {
-        return (int)max($this->lines);
+        return (int) max($this->lines);
     }
 
     public function sliceCode($code)
@@ -77,7 +72,7 @@ class LineRange
         $numLines = count($selectedCode);
 
         for ($i = 0; $i < $numLines; $i++) {
-            if ( ! $this->isInRange($i+1)) {
+            if (!$this->isInRange($i + 1)) {
                 unset($selectedCode[$i]);
             }
         }

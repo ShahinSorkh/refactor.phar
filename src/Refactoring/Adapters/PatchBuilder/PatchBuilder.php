@@ -1,15 +1,4 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace QafooLabs\Refactoring\Adapters\PatchBuilder;
 
@@ -23,14 +12,10 @@ use TomPHP\PatchBuilder\Types\OriginalLineNumber;
  */
 class PatchBuilder
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $path;
 
-    /**
-     * @var PatchBuilderBuffer
-     */
+    /** @var PatchBuilderBuffer */
     private $buffer;
 
     /**
@@ -39,9 +24,9 @@ class PatchBuilder
      */
     public function __construct($contents, $path = null)
     {
-        $lines = array();
+        $lines = [];
 
-        if ( ! empty($contents)) {
+        if (!empty($contents)) {
             $lines = explode("\n", rtrim($contents));
         }
 
@@ -62,25 +47,23 @@ class PatchBuilder
     /**
      * Change Token in given line from old to new.
      *
-     * @param int $originalLine
+     * @param int    $originalLine
      * @param string $oldToken
      * @param string $newToken
-     *
-     * @return void
      */
     public function changeToken($originalLine, $oldToken, $newToken)
     {
         $newLine = $this->buffer->getLine($this->createLineNumber($originalLine));
 
         $newLine = preg_replace(
-            '!(^|[^a-z0-9])(' . preg_quote($oldToken) . ')([^a-z0-9]|$)!',
-            '\1' . $newToken . '\3',
+            '!(^|[^a-z0-9])('.preg_quote($oldToken).')([^a-z0-9]|$)!',
+            '\1'.$newToken.'\3',
             $newLine
         );
 
         $this->buffer->replace(
             $this->createSingleLineRange($originalLine),
-            array($newLine)
+            [$newLine]
         );
     }
 
@@ -88,9 +71,6 @@ class PatchBuilder
      * Append new lines to an original line of the file.
      *
      * @param int $originalLine
-     * @param array $lines
-     *
-     * @return void
      */
     public function appendToLine($originalLine, array $lines)
     {
@@ -104,9 +84,6 @@ class PatchBuilder
      * Change one line by replacing it with one or many new lines.
      *
      * @param int $originalLine
-     * @param array $newLines
-     *
-     * @return void
      */
     public function changeLines($originalLine, array $newLines)
     {
@@ -114,11 +91,9 @@ class PatchBuilder
     }
 
     /**
-     * Remove one line
+     * Remove one line.
      *
      * @param int $originalLine
-     *
-     * @return void
      */
     public function removeLine($originalLine)
     {
@@ -130,9 +105,6 @@ class PatchBuilder
      *
      * @param int $startOriginalLine
      * @param int $endOriginalLine
-     * @param array $newLines
-     *
-     * @return void
      */
     public function replaceLines($startOriginalLine, $endOriginalLine, array $newLines)
     {
@@ -149,8 +121,8 @@ class PatchBuilder
         $builder = new PhpDiffBuilder();
 
         return $builder->buildPatch(
-            'a/' . $this->path,
-            'b/' . $this->path,
+            'a/'.$this->path,
+            'b/'.$this->path,
             $this->buffer
         );
     }

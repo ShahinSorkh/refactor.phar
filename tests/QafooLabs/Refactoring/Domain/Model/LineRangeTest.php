@@ -7,7 +7,7 @@ use QafooLabs\Refactoring\Domain\Model\LineRange;
 
 class LineRangeTest extends TestCase
 {
-    public function testCreateFromSingleLine()
+    public function test_create_from_single_line()
     {
         $range = LineRange::fromSingleLine(1);
 
@@ -18,9 +18,9 @@ class LineRangeTest extends TestCase
         $this->assertFalse($range->isInRange(2));
     }
 
-    public function testCreateFromString()
+    public function test_create_from_string()
     {
-        $range = LineRange::fromString("1-4");
+        $range = LineRange::fromString('1-4');
 
         $this->assertEquals(1, $range->getStart());
         $this->assertEquals(4, $range->getEnd());
@@ -29,7 +29,7 @@ class LineRangeTest extends TestCase
         $this->assertFalse($range->isInRange(5));
     }
 
-    public function testCreateFromLines()
+    public function test_create_from_lines()
     {
         $range = LineRange::fromLines(1, 4);
 

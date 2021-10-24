@@ -4,11 +4,9 @@ namespace QafooLabs\Refactoring\Domain\Model;
 
 class IndentingLineCollection extends LineCollection
 {
-    const INDENTATION_SIZE = 4;
+    public const INDENTATION_SIZE = 4;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $indentation = 0;
 
     public function addIndentation()
@@ -23,7 +21,7 @@ class IndentingLineCollection extends LineCollection
 
     public function append(Line $line)
     {
-        parent::append(new Line($this->createIndentationString() . (string) $line));
+        parent::append(new Line($this->createIndentationString().(string) $line));
     }
 
     /**

@@ -4,9 +4,7 @@ namespace QafooLabs\Refactoring\Domain\Model;
 
 class Line
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $line;
 
     /**

@@ -1,16 +1,4 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
-
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
@@ -43,7 +31,7 @@ class Variable
      */
     public function getToken()
     {
-        return '$' . $this->name;
+        return '$'.$this->name;
     }
 
     /**
@@ -51,7 +39,7 @@ class Variable
      */
     public function isLocal()
     {
-        return ! $this->isInstance();
+        return !$this->isInstance();
     }
 
     /**
@@ -67,11 +55,10 @@ class Variable
      */
     public function convertToInstance()
     {
-        if ( ! $this->isLocal()) {
+        if (!$this->isLocal()) {
             throw RefactoringException::variableNotLocal($this);
         }
 
-        return new Variable('$this->' . $this->name);
+        return new Variable('$this->'.$this->name);
     }
 }
-

@@ -1,35 +1,23 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace Tests\QafooLabs\Refactoring\Utils;
 
-use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Utils\ToStringIterator;
 
 class ToStringIteratorTest extends TestCase
 {
-    public function testConvertsObjectsToStrings()
+    public function test_converts_objects_to_strings()
     {
-        $data = array(
+        $data = [
             new StringableClass('value1'),
             new StringableClass('value2'),
-        );
+        ];
 
-        $it = new ToStringIterator(new ArrayIterator($data));
+        $it = new ToStringIterator(new \ArrayIterator($data));
 
         $this->assertEquals(
-            array('value1', 'value2'),
+            ['value1', 'value2'],
             iterator_to_array($it)
         );
     }

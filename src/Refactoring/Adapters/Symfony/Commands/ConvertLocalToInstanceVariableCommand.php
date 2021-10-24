@@ -1,32 +1,18 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace QafooLabs\Refactoring\Adapters\Symfony\Commands;
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Command\Command;
-
+use QafooLabs\Refactoring\Adapters\PatchBuilder\PatchEditor;
+use QafooLabs\Refactoring\Adapters\PHPParser\ParserVariableScanner;
+use QafooLabs\Refactoring\Adapters\Symfony\OutputPatchCommand;
+use QafooLabs\Refactoring\Adapters\TokenReflection\StaticCodeAnalysis;
+use QafooLabs\Refactoring\Application\ConvertLocalToInstanceVariable;
 use QafooLabs\Refactoring\Domain\Model\File;
 use QafooLabs\Refactoring\Domain\Model\Variable;
-
-use QafooLabs\Refactoring\Application\ConvertLocalToInstanceVariable;
-use QafooLabs\Refactoring\Adapters\PHPParser\ParserVariableScanner;
-use QafooLabs\Refactoring\Adapters\TokenReflection\StaticCodeAnalysis;
-use QafooLabs\Refactoring\Adapters\PatchBuilder\PatchEditor;
-use QafooLabs\Refactoring\Adapters\Symfony\OutputPatchCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ConvertLocalToInstanceVariableCommand extends Command
 {
@@ -38,7 +24,8 @@ class ConvertLocalToInstanceVariableCommand extends Command
             ->addArgument('file', InputArgument::REQUIRED, 'File that contains the local variable.')
             ->addArgument('line', InputArgument::REQUIRED, 'Line of one of the local variables occurrences.')
             ->addArgument('variable', InputArgument::REQUIRED, 'Name of the variable with or without $.')
-            ->setHelp(<<<HELP
+            ->setHelp(
+                <<<'HELP'
 If you want to convert a variable that is local to a method to an instance variable of
 that same class, the "convert local to instance variable" refactoring helps you with this
 task.
@@ -57,7 +44,7 @@ task.
 
     <info>php refactor.phar convert-local-to-instance-variable file.php 10 hello</info>
 
-Will convert variable \$hello into an instance variable \$this->hello.
+Will convert variable $hello into an instance variable $this->hello.
 HELP
             )
         ;
@@ -66,7 +53,7 @@ HELP
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $file = File::createFromPath($input->getArgument('file'), getcwd());
-        $line = (int)$input->getArgument('line');
+        $line = (int) $input->getArgument('line');
         $variable = new Variable($input->getArgument('variable'));
 
         $scanner = new ParserVariableScanner();

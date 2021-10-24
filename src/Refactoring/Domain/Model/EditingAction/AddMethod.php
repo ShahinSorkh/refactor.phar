@@ -6,31 +6,22 @@ use QafooLabs\Refactoring\Domain\Model\EditingAction;
 use QafooLabs\Refactoring\Domain\Model\EditorBuffer;
 use QafooLabs\Refactoring\Domain\Model\IndentationDetector;
 use QafooLabs\Refactoring\Domain\Model\IndentingLineCollection;
-use QafooLabs\Refactoring\Domain\Model\Line;
 use QafooLabs\Refactoring\Domain\Model\LineCollection;
 use QafooLabs\Refactoring\Domain\Model\MethodSignature;
 use QafooLabs\Refactoring\Utils\ToStringIterator;
 
 class AddMethod implements EditingAction
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     private $lineNumber;
 
-    /**
-     * @var MethodSignature
-     */
+    /** @var MethodSignature */
     private $newMethod;
 
-    /**
-     * @var LineCollection
-     */
+    /** @var LineCollection */
     private $selectedCode;
 
-    /**
-     * @var IndentingLineCollection
-     */
+    /** @var IndentingLineCollection */
     private $newCode;
 
     /**
@@ -41,8 +32,8 @@ class AddMethod implements EditingAction
         MethodSignature $newMethod,
         LineCollection $selectedCode
     ) {
-        $this->lineNumber   = $lineNumber;
-        $this->newMethod    = $newMethod;
+        $this->lineNumber = $lineNumber;
+        $this->newMethod = $newMethod;
         $this->selectedCode = $selectedCode;
     }
 
@@ -91,7 +82,7 @@ class AddMethod implements EditingAction
     private function createVariableList(array $variables)
     {
         return implode(', ', array_map(function ($variableName) {
-            return '$' . $variableName;
+            return '$'.$variableName;
         }, $variables));
     }
 
@@ -121,14 +112,14 @@ class AddMethod implements EditingAction
             return;
         }
 
-        $returnVariable = '$' . reset($returnVars);
+        $returnVariable = '$'.reset($returnVars);
 
         if ($numVariables > 1) {
-            $returnVariable = 'array(' . $this->createVariableList($returnVars) . ')';
+            $returnVariable = 'array('.$this->createVariableList($returnVars).')';
         }
 
         $this->newCode->appendBlankLine();
-        $this->newCode->appendString('return ' . $returnVariable . ';');
+        $this->newCode->appendString('return '.$returnVariable.';');
     }
 
     private function addMethodClosing()
@@ -136,7 +127,6 @@ class AddMethod implements EditingAction
         $this->newCode->removeIndentation();
         $this->newCode->appendString('}');
     }
-
 
     /**
      * @return string[]

@@ -2,16 +2,12 @@
 
 namespace QafooLabs\Refactoring\Utils;
 
-use Iterator;
-
-class ToStringIterator implements Iterator
+class ToStringIterator implements \Iterator
 {
-    /**
-     * @var Iterator
-     */
+    /** @var \Iterator */
     private $iterator;
 
-    public function __construct(Iterator $it)
+    public function __construct(\Iterator $it)
     {
         $this->iterator = $it;
     }

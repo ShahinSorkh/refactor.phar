@@ -1,15 +1,4 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace Tests\QafooLabs\Refactoring\Domain\Model;
 
@@ -18,22 +7,22 @@ use QafooLabs\Refactoring\Domain\Model\PhpName;
 
 class PhpNameTest extends TestCase
 {
-    public function testIsAffectedByChangesToItself()
+    public function test_is_affected_by_changes_to_itself()
     {
-        $name = new PhpName("Foo\Bar\Baz", "Baz");
+        $name = new PhpName("Foo\Bar\Baz", 'Baz');
 
         $this->assertTrue($name->isAffectedByChangesTo($name));
     }
 
-    public function testIsNotAffectedByChangesToNonRelativePart()
+    public function test_is_not_affected_by_changes_to_non_relative_part()
     {
-        $name = new PhpName("Foo\Bar\Baz", "Baz");
+        $name = new PhpName("Foo\Bar\Baz", 'Baz');
         $changing = new PhpName("Foo\Bar", "Foo\Bar");
 
         $this->assertFalse($name->isAffectedByChangesTo($changing));
     }
 
-    public function testIsAffectedByRelativeChanges()
+    public function test_is_affected_by_relative_changes()
     {
         $name = new PhpName("Foo\Bar\Baz", "Bar\Baz");
         $changing = new PhpName("Foo\Bar", "Foo\Bar");
@@ -41,7 +30,7 @@ class PhpNameTest extends TestCase
         $this->assertTrue($name->isAffectedByChangesTo($changing));
     }
 
-    public function testRelativeChanges()
+    public function test_relative_changes()
     {
         $name = new PhpName("Foo\Bar\Baz", "Bar\Baz");
         $from = new PhpName("Foo\Bar", "Foo\Bar");
@@ -53,19 +42,19 @@ class PhpNameTest extends TestCase
         $this->assertEquals('Baz\Baz', $newName->relativeName());
     }
 
-    public function testRegression()
+    public function test_regression()
     {
         $name = new PhpName("Bar\Bar", "Bar\Bar");
-        $changing = new PhpName("Bar", "Bar");
+        $changing = new PhpName('Bar', 'Bar');
 
         $this->assertTrue($name->isAffectedByChangesTo($changing));
     }
 
-    public function testRegression2()
+    public function test_regression2()
     {
-        $name = new PhpName("Foo\\Foo", "Foo\\Foo");
-        $from = new PhpName("Foo\\Foo", "Foo");
-        $to = new PhpName("Foo\\Bar", "Bar");
+        $name = new PhpName('Foo\\Foo', 'Foo\\Foo');
+        $from = new PhpName('Foo\\Foo', 'Foo');
+        $to = new PhpName('Foo\\Bar', 'Bar');
 
         $changed = $name->change($from, $to);
 
@@ -73,11 +62,11 @@ class PhpNameTest extends TestCase
         $this->assertEquals('Foo\\Bar', $changed->relativeName());
     }
 
-    public function testRegression3()
+    public function test_regression3()
     {
-        $name = new PhpName("Foo\\Foo", "Foo\\Foo");
-        $from = new PhpName("Foo\\Foo", "Foo\\Foo");
-        $to = new PhpName("Foo\\Bar\\Foo", "Foo\\Bar\\Foo");
+        $name = new PhpName('Foo\\Foo', 'Foo\\Foo');
+        $from = new PhpName('Foo\\Foo', 'Foo\\Foo');
+        $to = new PhpName('Foo\\Bar\\Foo', 'Foo\\Bar\\Foo');
 
         $changed = $name->change($from, $to);
 
@@ -85,7 +74,7 @@ class PhpNameTest extends TestCase
         $this->assertEquals('Foo\\Bar\\Foo', $changed->relativeName());
     }
 
-    public function testCreateDeclarationName()
+    public function test_create_declaration_name()
     {
         $name = PhpName::createDeclarationName('Foo\Bar\Baz');
 
@@ -94,20 +83,20 @@ class PhpNameTest extends TestCase
         $this->assertEquals(PhpName::TYPE_CLASS, $name->type());
     }
 
-    public function testRegression4()
+    public function test_regression4()
     {
         $name = new PhpName('Foo', 'Foo');
         $from = new PhpName('Foo\\Foo', 'Foo');
         $to = new PhpName('Foo\\Bar', 'Bar');
 
-        $this->assertFalse($name->isAffectedByChangesTo($from), "Namespace should not be affected by changes to Class in namespace.");
+        $this->assertFalse($name->isAffectedByChangesTo($from), 'Namespace should not be affected by changes to Class in namespace.');
     }
 
-    public function testRegression5()
+    public function test_regression5()
     {
         $from = new PhpName("Qafoo\ChangeTrack\ChangeFeed", "Qafoo\ChangeTrack\ChangeFeed");
         $to = new PhpName("Qafoo\ChangeTrack\Analyzer\ChangeFeed", "Qafoo\ChangeTrack\Analyzer\ChangeFeed");
-        $name = new PhpName("Qafoo\ChangeTrack\ChangeFeed", "ChangeFeed");
+        $name = new PhpName("Qafoo\ChangeTrack\ChangeFeed", 'ChangeFeed');
 
         $changed = $name->change($from, $to);
 
@@ -115,7 +104,7 @@ class PhpNameTest extends TestCase
         $this->assertEQuals('Analyzer\ChangeFeed', $changed->relativeName());
     }
 
-    public function testRegression6()
+    public function test_regression6()
     {
         $from = new PhpName('Foo\Foo\Foo', 'Foo');
         $to = new PhpName('Foo\Bar\Baz\Boing', 'Boing');
@@ -127,7 +116,7 @@ class PhpNameTest extends TestCase
         $this->assertEquals('Foo\Bar\Baz\Boing', $changed->relativeName());
     }
 
-    public function testRegression7()
+    public function test_regression7()
     {
         $from = new PhpName('Foo\Foo\Foo', 'Foo');
         $to = new PhpName('Foo\Boing', 'Boing');
@@ -139,7 +128,7 @@ class PhpNameTest extends TestCase
         $this->assertEquals('Foo\Boing', $changed->relativeName());
     }
 
-    public function testRegression8()
+    public function test_regression8()
     {
         $from = new PhpName('Foo\Foo\Foo', 'Foo\Foo\Foo');
         $to = new PhpName('Foo\Boing', 'Foo\Boing');
@@ -151,7 +140,7 @@ class PhpNameTest extends TestCase
         $this->assertEquals('Foo', $changed->relativeName());
     }
 
-    public function testChangeKeepsType()
+    public function test_change_keeps_type()
     {
         $from = new PhpName('Foo\Foo\Foo', 'Foo\Foo\Foo');
         $to = new PhpName('Foo\Boing', 'Foo\Boing');
@@ -162,7 +151,7 @@ class PhpNameTest extends TestCase
         $this->assertEquals(PhpName::TYPE_NAMESPACE, $changed->type());
     }
 
-    public function testAddRelativeNameWhenNamespaceExpands()
+    public function test_add_relative_name_when_namespace_expands()
     {
         $from = new PhpName('Foo', 'Foo');
         $to = new PhpName('Foo\Bar', 'Foo\Bar');
@@ -175,7 +164,7 @@ class PhpNameTest extends TestCase
         $this->assertEquals('Bar\Foo', $changed->relativeName());
     }
 
-    public function testNotExpandWhenRelativeNameIsTypeClass()
+    public function test_not_expand_when_relative_name_is_type_class()
     {
         $from = new PhpName('Foo', 'Foo');
         $to = new PhpName('Foo\Bar', 'Foo\Bar');
@@ -190,8 +179,12 @@ class PhpNameTest extends TestCase
 
     /**
      * @dataProvider provideIsFullyQualified
+     *
+     * @param mixed $fqcn
+     * @param mixed $relativeName
+     * @param mixed $expected
      */
-    public function testIsFullyQualified($fqcn, $relativeName, $expected = TRUE)
+    public function test_is_fully_qualified($fqcn, $relativeName, $expected = true)
     {
         $name = new PHPName($fqcn, $relativeName);
 
@@ -200,27 +193,27 @@ class PhpNameTest extends TestCase
 
     public static function provideIsFullyQualified()
     {
-        $tests = array();
+        $tests = [];
 
-        $tests[] = array('Foo', 'Foo', TRUE);
-        $tests[] = array('Foo\\Bar\\Foo', 'Foo\\Bar\\Foo', TRUE);
+        $tests[] = ['Foo', 'Foo', true];
+        $tests[] = ['Foo\\Bar\\Foo', 'Foo\\Bar\\Foo', true];
 
-        $tests[] = array('Foo\\Bar\\Foo', 'Foo', FALSE);
-        $tests[] = array('Foo\\Bar\\Foo', 'Bar\\Foo', FALSE);
+        $tests[] = ['Foo\\Bar\\Foo', 'Foo', false];
+        $tests[] = ['Foo\\Bar\\Foo', 'Bar\\Foo', false];
 
         return $tests;
     }
 
-    public function testGetShortNameReturnsLastPartForFQCN()
+    public function test_get_short_name_returns_last_part_for_fqcn()
     {
-        $name = new PhpName('Foo\\Bar', "Foo\\Bar", null, null);
-        $short = new PhpName("Foo", "Foo", null, null);
+        $name = new PhpName('Foo\\Bar', 'Foo\\Bar', null, null);
+        $short = new PhpName('Foo', 'Foo', null, null);
 
         $this->assertEquals('Bar', $name->shortName());
         $this->assertEquals('Foo', $short->shortName());
     }
 
-    public function testIsUseStatementWhenParentIsAUseStatement()
+    public function test_is_use_statement_when_parent_is_a_use_statement()
     {
         $name = new PhpName('Foo\\Bar', 'Foo\\Bar', PhpName::TYPE_USE);
 

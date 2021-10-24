@@ -11,15 +11,15 @@ class UseStatementTest extends TestCase
 {
     private $useStatement;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
 
         $file = File::createFromPath(__FILE__, __DIR__);
-        $this->useStatement = new UseStatement($file, LineRange::fromLines(3,5));
+        $this->useStatement = new UseStatement($file, LineRange::fromLines(3, 5));
     }
 
-    public function testReturnsEndLineFromLineRange()
+    public function test_returns_end_line_from_line_range()
     {
         $this->assertEquals(5, $this->useStatement->getEndLine());
     }

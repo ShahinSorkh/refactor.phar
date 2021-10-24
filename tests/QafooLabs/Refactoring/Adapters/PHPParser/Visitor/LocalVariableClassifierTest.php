@@ -2,12 +2,12 @@
 
 namespace Tests\QafooLabs\Refactoring\Adapters\PHPParser\Visitor;
 
-use PHPUnit\Framework\TestCase;
-use PhpParser\NodeTraverser;
 use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Param;
+use PhpParser\NodeTraverser;
+use PHPUnit\Framework\TestCase;
 use QafooLabs\Refactoring\Adapters\PHPParser\Visitor\LocalVariableClassifier;
 
 class LocalVariableClassifierTest extends TestCase
@@ -15,95 +15,95 @@ class LocalVariableClassifierTest extends TestCase
     /**
      * @test
      */
-    public function givenVariable_WhenClassification_ThenLocalVariableFound()
+    public function given_variable__when_classification__then_local_variable_found()
     {
         $classifier = new LocalVariableClassifier();
-        $variable = new Variable("foo");
+        $variable = new Variable('foo');
 
         $classifier->enterNode($variable);
 
-        $this->assertEquals(array('foo' => array(-1)), $classifier->getLocalVariables());
+        $this->assertEquals(['foo' => [-1]], $classifier->getLocalVariables());
     }
 
     /**
      * @test
      */
-    public function givenAssignment_WhenClassification_ThenAssignmentFound()
+    public function given_assignment__when_classification__then_assignment_found()
     {
         $classifier = new LocalVariableClassifier();
         $assign = new Assign(
-            new Variable("foo"),
-            new Variable("bar")
+            new Variable('foo'),
+            new Variable('bar')
         );
 
         $classifier->enterNode($assign);
 
-        $this->assertEquals(array('foo' => array(-1)), $classifier->getAssignments());
+        $this->assertEquals(['foo' => [-1]], $classifier->getAssignments());
     }
 
     /**
      * @test
      */
-    public function givenAssignmentAndReadOfSameVariable_WhenClassification_ThenFindBoth()
+    public function given_assignment_and_read_of_same_variable__when_classification__then_find_both()
     {
         $classifier = new LocalVariableClassifier();
         $assign = new Assign(
-            new Variable("foo"),
-            new Variable("foo")
+            new Variable('foo'),
+            new Variable('foo')
         );
 
-        $traverser     = new NodeTraverser;
+        $traverser = new NodeTraverser;
         $traverser->addVisitor($classifier);
-        $traverser->traverse(array($assign));
+        $traverser->traverse([$assign]);
 
-        $this->assertEquals(array('foo' => array(-1)), $classifier->getAssignments());
-        $this->assertEquals(array('foo' => array(-1)), $classifier->getLocalVariables());
+        $this->assertEquals(['foo' => [-1]], $classifier->getAssignments());
+        $this->assertEquals(['foo' => [-1]], $classifier->getLocalVariables());
     }
 
     /**
      * @test
      */
-    public function givenThisVariable_WhenClassification_ThenNoLocalVariables()
+    public function given_this_variable__when_classification__then_no_local_variables()
     {
         $classifier = new LocalVariableClassifier();
-        $variable = new Variable("this");
+        $variable = new Variable('this');
 
         $classifier->enterNode($variable);
 
-        $this->assertEquals(array(), $classifier->getLocalVariables());
+        $this->assertEquals([], $classifier->getLocalVariables());
     }
 
     /**
      * @test
      */
-    public function givenParam_WhenClassification_FindAsAssignment()
+    public function given_param__when_classification__find_as_assignment()
     {
         $classifier = new LocalVariableClassifier();
         $param = new Param(new Variable('foo'));
 
         $classifier->enterNode($param);
 
-        $this->assertEquals(array('foo' => array(-1)), $classifier->getAssignments());
+        $this->assertEquals(['foo' => [-1]], $classifier->getAssignments());
     }
 
     /**
      * @test
      * @group GH-4
      */
-    public function givenArrayDimFetchASsignment_WhenClassification_FindAsAssignmentAndRead()
+    public function given_array_dim_fetch_a_ssignment__when_classification__find_as_assignment_and_read()
     {
         $classifier = new LocalVariableClassifier();
 
         $assign = new Assign(
             new ArrayDimFetch(
-                new Variable("foo")
+                new Variable('foo')
             ),
-            new Variable("bar")
+            new Variable('bar')
         );
 
         $classifier->enterNode($assign);
 
-        $this->assertEquals(array('foo' => array(-1)), $classifier->getLocalVariables());
-        $this->assertEquals(array('foo' => array(-1)), $classifier->getAssignments());
+        $this->assertEquals(['foo' => [-1]], $classifier->getLocalVariables());
+        $this->assertEquals(['foo' => [-1]], $classifier->getAssignments());
     }
 }

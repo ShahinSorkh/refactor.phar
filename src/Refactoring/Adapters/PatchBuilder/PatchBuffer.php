@@ -1,27 +1,13 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace QafooLabs\Refactoring\Adapters\PatchBuilder;
 
 use QafooLabs\Refactoring\Domain\Model\EditorBuffer;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
-use QafooLabs\Refactoring\Adapters\PatchBuilder\PatchBuilder;
 
 class PatchBuffer implements EditorBuffer
 {
-    /**
-     * @var \QafooLabs\Patches\PatchBuilder
-     */
+    /** @var \QafooLabs\Patches\PatchBuilder */
     private $builder;
 
     public function __construct(PatchBuilder $builder)

@@ -2,27 +2,22 @@
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
-use ArrayIterator;
-use IteratorAggregate;
-
-class LineCollection implements IteratorAggregate
+class LineCollection implements \IteratorAggregate
 {
-    /**
-     * @var Line[]
-     */
+    /** @var Line[] */
     private $lines;
 
     /**
      * @param Line[] $lines
      */
-    public function __construct(array $lines = array())
+    public function __construct(array $lines = [])
     {
         $this->lines = $lines;
     }
 
     public function getIterator()
     {
-        return new ArrayIterator($this->lines);
+        return new \ArrayIterator($this->lines);
     }
 
     /**

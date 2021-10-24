@@ -9,108 +9,108 @@ use QafooLabs\Refactoring\Utils\ToStringIterator;
 
 class LineCollectionTest extends TestCase
 {
-    public function testItStoresLines()
+    public function test_it_stores_lines()
     {
-        $lineObjects = array(
+        $lineObjects = [
             new Line('line 1'),
-            new Line('line 2')
-        );
+            new Line('line 2'),
+        ];
 
         $lines = new LineCollection($lineObjects);
 
         $this->assertSame($lineObjects, $lines->getLines());
     }
 
-    public function testAppendAddsALine()
+    public function test_append_adds_a_line()
     {
         $line1 = new Line('line 1');
         $line2 = new Line('line 2');
 
-        $lines = new LineCollection(array($line1));
+        $lines = new LineCollection([$line1]);
 
         $lines->append($line2);
 
-        $this->assertSame(array($line1, $line2), $lines->getLines());
+        $this->assertSame([$line1, $line2], $lines->getLines());
     }
 
-    public function testAppendStringAddsALine()
+    public function test_append_string_adds_a_line()
     {
         $line1 = 'line 1';
         $line2 = 'line 2';
 
-        $lines = new LineCollection(array(new Line($line1)));
+        $lines = new LineCollection([new Line($line1)]);
 
         $lines->appendString($line2);
 
         $this->assertEquals(
-            array(new Line($line1), new Line($line2)),
+            [new Line($line1), new Line($line2)],
             $lines->getLines()
         );
     }
 
-    public function testCreateFromArray()
+    public function test_create_from_array()
     {
-        $lines = LineCollection::createFromArray(array(
+        $lines = LineCollection::createFromArray([
             'line1',
             'line2',
-        ));
+        ]);
 
         $this->assertEquals(
-            array(new Line('line1'), new Line('line2')),
+            [new Line('line1'), new Line('line2')],
             $lines->getLines()
         );
     }
 
-    public function testCreateFromString()
+    public function test_create_from_string()
     {
         $lines = LineCollection::createFromString(
             "line1\nline2"
         );
 
         $this->assertEquals(
-            array(new Line('line1'), new Line('line2')),
+            [new Line('line1'), new Line('line2')],
             $lines->getLines()
         );
     }
 
-    public function testIsIterable()
+    public function test_is_iterable()
     {
-        $lineObjects = array(
+        $lineObjects = [
             new Line('line 1'),
-            new Line('line 2')
-        );
+            new Line('line 2'),
+        ];
 
         $lines = new LineCollection($lineObjects);
 
         $this->assertEquals($lineObjects, iterator_to_array($lines));
     }
 
-    public function testAppendLinesAddsGivenLines()
+    public function test_append_lines_adds_given_lines()
     {
-        $lines = LineCollection::createFromArray(array(
+        $lines = LineCollection::createFromArray([
             'line1',
             'line2',
-        ));
+        ]);
 
-        $lines->appendLines(LineCollection::createFromArray(array(
+        $lines->appendLines(LineCollection::createFromArray([
             'line3',
             'line4',
-        )));
+        ]));
 
         $this->assertEquals(
-            array('line1', 'line2', 'line3', 'line4'),
+            ['line1', 'line2', 'line3', 'line4'],
             iterator_to_array(new ToStringIterator($lines->getIterator()))
         );
     }
 
-    public function testAppendlankLine()
+    public function test_appendlank_line()
     {
         $lines = new LineCollection();
 
         $lines->appendBlankLine();
 
         $this->assertEquals(
-            array(''),
+            [''],
             iterator_to_array(new ToStringIterator($lines->getIterator()))
         );
     }

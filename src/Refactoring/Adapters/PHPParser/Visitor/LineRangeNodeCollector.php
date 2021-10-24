@@ -1,36 +1,21 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
-
 
 namespace QafooLabs\Refactoring\Adapters\PHPParser\Visitor;
 
+use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
-use PhpParser\Node;
-use PhpParser\Node\Stmt;
-use PhpParser\Node\Expr\FuncCall;
-use function Psy\sh;
 
 /**
  * Given a line range, collect the AST slice that is inside that range.
  */
 class LineRangeNodeCollector extends NodeVisitorAbstract
 {
-    /**
-     * @var LineRange
-     */
+    /** @var LineRange */
     private $lineRange;
+
     private $nodes;
+
     private $stack;
 
     public function __construct(LineRange $lineRange)
@@ -47,18 +32,18 @@ class LineRangeNodeCollector extends NodeVisitorAbstract
     public function enterNode(Node $node)
     {
         if (!empty($this->stack)) {
-            $node->setAttribute('parent', $this->stack[count($this->stack)-1]);
+            $node->setAttribute('parent', $this->stack[count($this->stack) - 1]);
         }
         $this->stack[] = $node;
 
-        if (! $this->lineRange->isInRange($node->getLine()) || ! $node->hasAttribute('parent')) {
+        if (!$this->lineRange->isInRange($node->getLine()) || !$node->hasAttribute('parent')) {
             return;
         }
 
         do {
             $parent = ($parent ?? $node)->getAttribute('parent');
             $this->nodes->attach($parent);
-        } while($parent->hasAttribute('parent'));
+        } while ($parent->hasAttribute('parent'));
     }
 
     public function leaveNode(Node $node)
@@ -71,4 +56,3 @@ class LineRangeNodeCollector extends NodeVisitorAbstract
         return iterator_to_array($this->nodes);
     }
 }
-

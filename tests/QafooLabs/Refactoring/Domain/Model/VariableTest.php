@@ -7,14 +7,14 @@ use QafooLabs\Refactoring\Domain\Model\Variable;
 
 class VariableTest extends TestCase
 {
-    public function testCreateInvalidVariable()
+    public function test_create_invalid_variable()
     {
         $this->expectException('QafooLabs\Refactoring\Domain\Model\RefactoringException', 'The given variable name "(); " is not valid in PHP.');
 
         new Variable('(); ');
     }
 
-    public function testGetNameOrToken()
+    public function test_get_name_or_token()
     {
         $variable = new Variable('$var');
 
@@ -22,7 +22,7 @@ class VariableTest extends TestCase
         $this->assertEquals('$var', $variable->getToken());
     }
 
-    public function testCreateInstanceVariable()
+    public function test_create_instance_variable()
     {
         $variable = new Variable('$this->var');
 
@@ -33,7 +33,7 @@ class VariableTest extends TestCase
         $this->assertFalse($variable->isLocal());
     }
 
-    public function testCreateLocalVariable()
+    public function test_create_local_variable()
     {
         $variable = new Variable('$var');
 
@@ -41,7 +41,7 @@ class VariableTest extends TestCase
         $this->assertTrue($variable->isLocal());
     }
 
-    public function testCreateInstanceFromLocal()
+    public function test_create_instance_from_local()
     {
         $local = new Variable('$var');
         $instance = $local->convertToInstance();

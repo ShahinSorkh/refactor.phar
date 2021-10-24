@@ -33,10 +33,10 @@ class NoImportedUsagesFilter
         return array_filter(
             $phpNames,
             function ($occurance) use ($fileUseOccurances) {
-                return (
-                    $occurance->name()->type() !== PhpName::TYPE_USAGE ||
-                    !isset($fileUseOccurances[$occurance->name()->fullyQualifiedName()])
-                );
+                return
+                    $occurance->name()->type() !== PhpName::TYPE_USAGE
+                    || !isset($fileUseOccurances[$occurance->name()->fullyQualifiedName()])
+                ;
             }
         );
     }

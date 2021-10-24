@@ -2,33 +2,27 @@
 
 namespace QafooLabs\Refactoring\Domain\Model\EditingAction;
 
+use QafooLabs\Refactoring\Domain\Model\DefinedVariables;
 use QafooLabs\Refactoring\Domain\Model\EditingAction;
 use QafooLabs\Refactoring\Domain\Model\EditorBuffer;
-use QafooLabs\Refactoring\Domain\Model\DefinedVariables;
 use QafooLabs\Refactoring\Domain\Model\Variable;
 
 class RenameVariable implements EditingAction
 {
-    /**
-     * @var DefinedVariables
-     */
+    /** @var DefinedVariables */
     private $definedVars;
 
-    /**
-     * @var Variable
-     */
+    /** @var Variable */
     private $oldName;
 
-    /**
-     * @var Variable
-     */
+    /** @var Variable */
     private $newName;
 
     public function __construct(DefinedVariables $definedVars, Variable $oldName, Variable $newName)
     {
         $this->definedVars = $definedVars;
-        $this->oldName    = $oldName;
-        $this->newName    = $newName;
+        $this->oldName = $oldName;
+        $this->newName = $newName;
     }
 
     public function performEdit(EditorBuffer $buffer)
@@ -50,7 +44,7 @@ class RenameVariable implements EditingAction
         $variables = $this->definedVars->all();
         $variableName = $this->oldName->getName();
 
-        $lines = array();
+        $lines = [];
 
         if (isset($variables[$variableName])) {
             $lines = $variables[$variableName];
@@ -59,4 +53,3 @@ class RenameVariable implements EditingAction
         return $lines;
     }
 }
-

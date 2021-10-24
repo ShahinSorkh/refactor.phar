@@ -2,9 +2,9 @@
 
 namespace QafooLabs\Refactoring\Domain\Services;
 
-use QafooLabs\Refactoring\Domain\Model\LineRange;
-use QafooLabs\Refactoring\Domain\Model\File;
 use QafooLabs\Refactoring\Domain\Model\DefinedVariables;
+use QafooLabs\Refactoring\Domain\Model\File;
+use QafooLabs\Refactoring\Domain\Model\LineRange;
 
 interface VariableScanner
 {

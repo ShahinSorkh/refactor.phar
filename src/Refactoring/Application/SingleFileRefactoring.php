@@ -2,44 +2,32 @@
 
 namespace QafooLabs\Refactoring\Application;
 
-use QafooLabs\Refactoring\Domain\Services\VariableScanner;
-use QafooLabs\Refactoring\Domain\Services\CodeAnalysis;
-use QafooLabs\Refactoring\Domain\Services\Editor;
 use QafooLabs\Refactoring\Domain\Model\EditingSession;
 use QafooLabs\Refactoring\Domain\Model\File;
 use QafooLabs\Refactoring\Domain\Model\LineRange;
 use QafooLabs\Refactoring\Domain\Model\RefactoringException;
+use QafooLabs\Refactoring\Domain\Services\CodeAnalysis;
+use QafooLabs\Refactoring\Domain\Services\Editor;
+use QafooLabs\Refactoring\Domain\Services\VariableScanner;
 
 abstract class SingleFileRefactoring
 {
-    /**
-     * @var VariableScanner
-     */
+    /** @var VariableScanner */
     protected $variableScanner;
 
-    /**
-     * @var CodeAnalysis
-     */
+    /** @var CodeAnalysis */
     protected $codeAnalysis;
 
-    /**
-     * @var Editor
-     */
+    /** @var Editor */
     protected $editor;
 
-    /**
-     * @var EditingSession
-     */
+    /** @var EditingSession */
     protected $session;
 
-    /**
-     * @var File
-     */
+    /** @var File */
     protected $file;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $line;
 
     public function __construct(
@@ -54,7 +42,7 @@ abstract class SingleFileRefactoring
 
     protected function assertIsInsideMethod()
     {
-        if ( ! $this->codeAnalysis->isInsideMethod($this->file, LineRange::fromSingleLine($this->line))) {
+        if (!$this->codeAnalysis->isInsideMethod($this->file, LineRange::fromSingleLine($this->line))) {
             throw RefactoringException::rangeIsNotInsideMethod(LineRange::fromSingleLine($this->line));
         }
     }
@@ -77,10 +65,9 @@ abstract class SingleFileRefactoring
     {
         $selectedMethodLineRange = $this->codeAnalysis->findMethodRange($this->file, LineRange::fromSingleLine($this->line));
 
-        $definedVariables = $this->variableScanner->scanForVariables(
-            $this->file, $selectedMethodLineRange
+        return $this->variableScanner->scanForVariables(
+            $this->file,
+            $selectedMethodLineRange
         );
-
-        return $definedVariables;
     }
 }

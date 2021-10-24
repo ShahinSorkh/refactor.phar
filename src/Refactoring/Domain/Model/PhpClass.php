@@ -1,36 +1,19 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
 /**
- * Representation of a PHP class
+ * Representation of a PHP class.
  */
 class PhpClass
 {
-    /**
-     * @var PhpName
-     */
+    /** @var PhpName */
     private $declarationName;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $declarationLine;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $namespaceDeclarationLine;
 
     public function __construct(PhpName $declarationName, $declarationLine, $namespaceDeclarationLine)
@@ -60,4 +43,3 @@ class PhpClass
         return $this->namespaceDeclarationLine;
     }
 }
-

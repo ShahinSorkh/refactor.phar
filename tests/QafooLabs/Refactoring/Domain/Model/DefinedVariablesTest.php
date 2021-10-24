@@ -10,13 +10,13 @@ class DefinedVariablesTest extends TestCase
     /**
      * @test
      */
-    public function whenVariablesUsedAfter_ThenReturnAssignments()
+    public function when_variables_used_after__then_return_assignments()
     {
-        $selectedRange = new DefinedVariables(array('foo' => array(1)), array('foo' => array(1)));
-        $methodRange = new DefinedVariables(array('foo' => array(1, 2)), array('foo' => array(1, 2)));
+        $selectedRange = new DefinedVariables(['foo' => [1]], ['foo' => [1]]);
+        $methodRange = new DefinedVariables(['foo' => [1, 2]], ['foo' => [1, 2]]);
 
         $variables = $methodRange->variablesFromSelectionUsedAfter($selectedRange);
 
-        $this->assertEquals(array('foo'), $variables);
+        $this->assertEquals(['foo'], $variables);
     }
 }

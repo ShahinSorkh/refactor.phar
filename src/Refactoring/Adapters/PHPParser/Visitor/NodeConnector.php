@@ -1,20 +1,9 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace QafooLabs\Refactoring\Adapters\PHPParser\Visitor;
 
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
+use PhpParser\NodeVisitorAbstract;
 
 /**
  * Connects the nodes.
@@ -25,19 +14,21 @@ class NodeConnector extends NodeVisitorAbstract
 {
     public function enterNode(Node $node)
     {
-        $subNodes = array();
+        $subNodes = [];
         foreach ($node as $subNode) {
             if ($subNode instanceof Node) {
                 $subNodes[] = $subNode;
+
                 continue;
-            } else if (!is_array($subNode)) {
+            }
+            if (!is_array($subNode)) {
                 continue;
             }
 
             $subNodes = array_merge($subNodes, array_values($subNode));
         }
 
-        for ($i=0,$c=count($subNodes); $i<$c; $i++) {
+        for ($i = 0,$c = count($subNodes); $i < $c; $i++) {
             if (!$subNodes[$i] instanceof Node) {
                 continue;
             }

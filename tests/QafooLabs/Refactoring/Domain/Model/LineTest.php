@@ -7,7 +7,7 @@ use QafooLabs\Refactoring\Domain\Model\Line;
 
 class LineTest extends TestCase
 {
-    public function testItStoresTheLineOfCode()
+    public function test_it_stores_the_line_of_code()
     {
         $content = 'echo "Hello world!";';
 
@@ -16,28 +16,28 @@ class LineTest extends TestCase
         $this->assertEquals($content, (string) $line);
     }
 
-    public function testIsEmptyForEmptyLine()
+    public function test_is_empty_for_empty_line()
     {
         $line = new Line('');
 
         $this->assertTrue($line->isEmpty());
     }
 
-    public function testIsEmptyForLineWithContent()
+    public function test_is_empty_for_line_with_content()
     {
         $line = new Line('$a = 5;');
 
         $this->assertFalse($line->isEmpty());
     }
 
-    public function testGetIndentationFor2Spaces()
+    public function test_get_indentation_for2_spaces()
     {
         $line = new Line('  echo "Test";');
 
         $this->assertEquals(2, $line->getIndentation());
     }
 
-    public function testGetIndentationFor4Spaces()
+    public function test_get_indentation_for4_spaces()
     {
         $line = new Line('    echo "Test";');
 

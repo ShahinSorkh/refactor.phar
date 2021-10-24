@@ -1,26 +1,13 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
-
 
 namespace QafooLabs\Refactoring\Adapters\PHPParser\Visitor;
 
 use PhpParser\Node;
-use PhpParser\NodeVisitorAbstract;
-use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\ArrayDimFetch;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Param;
-use SplObjectStorage;
+use PhpParser\NodeVisitorAbstract;
 
 /**
  * Classify local variables into assignments and usages,
@@ -29,12 +16,14 @@ use SplObjectStorage;
 class LocalVariableClassifier extends NodeVisitorAbstract
 {
     private $localVariables = [];
+
     private $assignments = [];
+
     private $seenAssignmentVariables;
 
     public function __construct()
     {
-        $this->seenAssignmentVariables = new SplObjectStorage();
+        $this->seenAssignmentVariables = new \SplObjectStorage();
     }
 
     public function enterNode(Node $node)
@@ -62,7 +51,7 @@ class LocalVariableClassifier extends NodeVisitorAbstract
         if ($node->var instanceof Variable) {
             $this->assignments[$node->var->name][] = $node->getLine();
             $this->seenAssignmentVariables->attach($node->var);
-        } else if ($node->var instanceof ArrayDimFetch) {
+        } elseif ($node->var instanceof ArrayDimFetch) {
             // $foo[] = "baz" is both a read and a write access to $foo
             $this->localVariables[$node->var->var->name][] = $node->getLine();
             $this->assignments[$node->var->var->name][] = $node->getLine();
@@ -72,7 +61,7 @@ class LocalVariableClassifier extends NodeVisitorAbstract
 
     private function enterVariableNode($node)
     {
-        if ($node->name === "this" || $this->seenAssignmentVariables->contains($node)) {
+        if ($node->name === 'this' || $this->seenAssignmentVariables->contains($node)) {
             return;
         }
 

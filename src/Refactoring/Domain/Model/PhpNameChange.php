@@ -1,15 +1,4 @@
 <?php
-/**
- * Qafoo PHP Refactoring Browser
- *
- * LICENSE
- *
- * This source file is subject to the MIT license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
- */
 
 namespace QafooLabs\Refactoring\Domain\Model;
 
@@ -18,6 +7,7 @@ use QafooLabs\Collections\Hashable;
 class PhpNameChange implements Hashable
 {
     private $fromName;
+
     private $toName;
 
     public function __construct(PhpName $fromName, PhpName $toName)
@@ -38,6 +28,6 @@ class PhpNameChange implements Hashable
 
     public function hashCode()
     {
-        return "1373136290" . $this->fromName->hashCode() . $this->toName->hashCode();
+        return '1373136290'.$this->fromName->hashCode().$this->toName->hashCode();
     }
 }

@@ -4,9 +4,7 @@ namespace QafooLabs\Refactoring\Domain\Model;
 
 class IndentationDetector
 {
-    /**
-     * @var LineCollection
-     */
+    /** @var LineCollection */
     private $lines;
 
     public function __construct(LineCollection $lines)
@@ -47,6 +45,7 @@ class IndentationDetector
         foreach ($this->lines as $line) {
             if (!$line->isEmpty()) {
                 $indentation = $line->getIndentation();
+
                 break;
             }
         }

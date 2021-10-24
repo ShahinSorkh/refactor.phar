@@ -12,12 +12,12 @@ class IndentingLineCollectionTest extends TestCase
 {
     private $lines;
 
-    protected function setUp():void
+    protected function setUp(): void
     {
         $this->lines = new IndentingLineCollection();
     }
 
-    public function testIsALineCollection()
+    public function test_is_a_line_collection()
     {
         $this->assertInstanceOf(
             'QafooLabs\Refactoring\Domain\Model\LineCollection',
@@ -25,18 +25,18 @@ class IndentingLineCollectionTest extends TestCase
         );
     }
 
-    public function testAppendAddsIndentation()
+    public function test_append_adds_indentation()
     {
         $this->lines->addIndentation();
 
         $this->lines->append(new Line('echo "test";'));
 
-        $this->assertLinesMatch(array(
-            '    echo "test";'
-        ));
+        $this->assertLinesMatch([
+            '    echo "test";',
+        ]);
     }
 
-    public function testAppendAddsMulitpleIndentation()
+    public function test_append_adds_mulitple_indentation()
     {
         $this->lines->append(new Line('echo "line1";'));
         $this->lines->addIndentation();
@@ -44,14 +44,14 @@ class IndentingLineCollectionTest extends TestCase
         $this->lines->addIndentation();
         $this->lines->append(new Line('echo "line3";'));
 
-        $this->assertLinesMatch(array(
+        $this->assertLinesMatch([
             'echo "line1";',
             '    echo "line2";',
-            '        echo "line3";'
-        ));
+            '        echo "line3";',
+        ]);
     }
 
-    public function testAppendRemovesIndentation()
+    public function test_append_removes_indentation()
     {
         $this->lines->append(new Line('echo "line1";'));
         $this->lines->addIndentation();
@@ -59,14 +59,14 @@ class IndentingLineCollectionTest extends TestCase
         $this->lines->removeIndentation();
         $this->lines->append(new Line('echo "line3";'));
 
-        $this->assertLinesMatch(array(
+        $this->assertLinesMatch([
             'echo "line1";',
             '    echo "line2";',
-            'echo "line3";'
-        ));
+            'echo "line3";',
+        ]);
     }
 
-    public function testAppendStringObeysIndentation()
+    public function test_append_string_obeys_indentation()
     {
         $this->lines->appendString('echo "line1";');
         $this->lines->addIndentation();
@@ -74,33 +74,33 @@ class IndentingLineCollectionTest extends TestCase
         $this->lines->removeIndentation();
         $this->lines->appendString('echo "line3";');
 
-        $this->assertLinesMatch(array(
+        $this->assertLinesMatch([
             'echo "line1";',
             '    echo "line2";',
-            'echo "line3";'
-        ));
+            'echo "line3";',
+        ]);
     }
 
-    public function testAppendLinesObeysIndentation()
+    public function test_append_lines_obeys_indentation()
     {
         $this->lines->addIndentation();
 
-        $this->lines->appendLines(LineCollection::createFromArray(array(
+        $this->lines->appendLines(LineCollection::createFromArray([
             'echo "line1";',
-            'echo "line2";'
-        )));
+            'echo "line2";',
+        ]));
 
-        $this->assertLinesMatch(array(
+        $this->assertLinesMatch([
             '    echo "line1";',
             '    echo "line2";',
-        ));
+        ]);
     }
 
-    public function testAddBlankLineContainsNoIndentation()
+    public function test_add_blank_line_contains_no_indentation()
     {
         $this->lines->appendBlankLine();
 
-        $this->assertLinesMatch(array(''));
+        $this->assertLinesMatch(['']);
     }
 
     private function assertLinesMatch(array $expected)

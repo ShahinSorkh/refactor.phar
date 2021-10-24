@@ -2,32 +2,23 @@
 
 namespace QafooLabs\Refactoring\Application;
 
-use QafooLabs\Refactoring\Domain\Model\LineRange;
-use QafooLabs\Refactoring\Domain\Model\File;
-use QafooLabs\Refactoring\Domain\Model\MethodSignature;
-use QafooLabs\Refactoring\Domain\Model\EditingSession;
-use QafooLabs\Refactoring\Domain\Model\RefactoringException;
-
-use QafooLabs\Refactoring\Domain\Services\VariableScanner;
-use QafooLabs\Refactoring\Domain\Services\CodeAnalysis;
-use QafooLabs\Refactoring\Domain\Services\Editor;
-use QafooLabs\Refactoring\Domain\Model\LineCollection;
 use QafooLabs\Refactoring\Domain\Model\EditingAction\AddMethod;
 use QafooLabs\Refactoring\Domain\Model\EditingAction\ReplaceWithMethodCall;
+use QafooLabs\Refactoring\Domain\Model\File;
+use QafooLabs\Refactoring\Domain\Model\LineCollection;
+use QafooLabs\Refactoring\Domain\Model\LineRange;
+use QafooLabs\Refactoring\Domain\Model\MethodSignature;
+use QafooLabs\Refactoring\Domain\Model\RefactoringException;
 
 /**
- * Extract Method Refactoring
+ * Extract Method Refactoring.
  */
 class ExtractMethod extends SingleFileRefactoring
 {
-    /**
-     * @var LineRange
-     */
+    /** @var LineRange */
     private $extractRange;
 
-    /**
-     * @var MethodSignature
-     */
+    /** @var MethodSignature */
     private $newMethod;
 
     /**
@@ -50,7 +41,7 @@ class ExtractMethod extends SingleFileRefactoring
 
     protected function assertIsInsideMethod()
     {
-        if ( ! $this->codeAnalysis->isInsideMethod($this->file, $this->extractRange)) {
+        if (!$this->codeAnalysis->isInsideMethod($this->file, $this->extractRange)) {
             throw RefactoringException::rangeIsNotInsideMethod($this->extractRange);
         }
     }
