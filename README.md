@@ -5,6 +5,7 @@
     Check the diffs carefully before applying the patches.
 
 [![CI](https://github.com/ShahinSorkh/refactor.phar/actions/workflows/main.yml/badge.svg)](https://github.com/ShahinSorkh/refactor.phar/actions/workflows/main.yml)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/ShahinSorkh/refactor.phar)
 
 Automatic Refactorings for PHP Code by generating diffs that describe
 the refactorings steps. To prevent simple mistakes during refactorings, an automated tool
