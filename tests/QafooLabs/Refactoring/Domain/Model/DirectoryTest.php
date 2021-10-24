@@ -33,7 +33,7 @@ class DirectoryTest extends TestCase
         ];
 
         vfsStream::create($structure, vfsStream::setup('project'));
-        $dir = vfsStream::url('project/src');
+        $dir = vfsStream::url('project'.DIRECTORY_SEPARATOR.'src');
 
         $directory = new Directory($dir, $dir);
         $files = $directory->findAllPhpFilesRecursivly();

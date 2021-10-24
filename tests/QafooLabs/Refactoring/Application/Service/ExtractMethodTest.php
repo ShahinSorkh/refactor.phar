@@ -41,8 +41,7 @@ class ExtractMethodTest extends TestCase
             .'    {'.PHP_EOL
             .'        echo "Hello World";'.PHP_EOL
             .'    }'.PHP_EOL
-            .'}'
-
+            .'}'.PHP_EOL
         ), LineRange::fromString('6-6'), 'helloWorld');
 
         \Phake::verify($this->applyCommand)->apply(
